@@ -6,6 +6,7 @@ library(GISTools)
 library(raster)
 library(rgdal)
 
+# Solution for file path found here: https://gist.github.com/jennybc/362f52446fe1ebc4c49f
 setwd(file.path(PROJHOME, "data"))
 
 #Lis la carte des comtés du Nouveau-Brunswick disponible sur GéoNB
