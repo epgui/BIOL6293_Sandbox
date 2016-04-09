@@ -8,6 +8,9 @@ pour en faire l'analyse. Seules les données de deux patients sont inclues dans 
 de limites techniques: le jeu de données complet fait plusieurs Go en taille.
 
 ## <a name="spatial_analysis">Analyse et statistiques spatiales</a>
+
+[SA_1]: https://github.com/epgui/BIOL6293_Sandbox/images/SA_1.png "Graphique de Kent et Westmorland avec les points de cueillette des échantillons"
+
 ```
 library(sp)
 library(rgeos)
@@ -57,6 +60,13 @@ summary(coordonnees)
 
 #Fais un graphique de KENT et Westmorland avec les points de ceuillettes des échantillons
 plot(comteswgs.84[5,], xlab = "Longitude", ylab = "Latitude", axes = TRUE, main = "Comté de KENT")
+
+>>
+```
+
+![Graphique de Kent et Westmorland avec les points de cueillette des échantillons][SA_1]
+
+```
 plot(comteswgs.84[9,], add=TRUE)
 plot(coordonnees, pch =21, cex = 0.7, bg="dodgerblue", add = TRUE)
 
