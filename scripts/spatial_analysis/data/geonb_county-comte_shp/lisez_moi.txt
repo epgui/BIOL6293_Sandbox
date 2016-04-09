@@ -1,0 +1,27 @@
+Services Nouveau-Brunswick - GeoNB
+http://www.snb.ca/geonb
+
+**DESCRIPTION**
+COMTÉS faisant partie de la Base de données des régions administratives du Nouveau-Brunswick (v1.0).
+
+**FORMAT**
+Shape file
+
+**DÉSIGNATION DES FICHIERS**
+geonb_county-comte.* - graphiques et attributs
+geonb_county-comte.TXT - attributs supplémentaires
+
+**RÉFÉRENCES SPATIALES**
+Système de référence: North-American Datum 1983 (CSRS)
+Projection: Stéréographique sécante
+EPSG: 2953
+
+**SOURCE**
+Ministère des Ressources naturelles
+
+**DATE**
+2004-04-01
+
+**LICENCE**
+Licence des données ouvertes de GeoNB
+http://geonb.snb.ca/documents/license/geonb-odl_fr.pdf
