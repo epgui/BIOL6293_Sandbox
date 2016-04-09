@@ -4,6 +4,7 @@ library(maptools)
 library(classInt)
 library(GISTools)
 library(raster)
+library(rgdal)
 
 setwd(file.path(PROJHOME, "data"))
 
