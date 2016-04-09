@@ -1,10 +1,13 @@
+# L'installation de rgdal et de rgeos demande quelques étapes supplémentaires:
+# http://tlocoh.r-forge.r-project.org/mac_rgeos_rgdal.html
+
 library(sp)
-library(rgeos)
 library(maptools)
 library(classInt)
 library(GISTools)
 library(raster)
-library(rgdal)
+library(rgeos)    # Voir ci-dessus
+library(rgdal)    # Voir ci-dessus
 
 # Solution for file path found here: https://gist.github.com/jennybc/362f52446fe1ebc4c49f
 setwd(file.path(PROJHOME, "data"))
