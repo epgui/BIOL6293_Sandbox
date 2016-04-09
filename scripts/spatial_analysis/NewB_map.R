@@ -1,7 +1,9 @@
 library(sp)
 library(rgeos)
 library(maptools)
-setwd("C:/Users/Francois/Documents/R/Spatial_analysis/ShaleGas")
+
+setwd(file.path(PROJHOME, "data"))
+
 #Lis la carte des comtés du Nouveau-Brunswick disponible sur GéoNB
 comtes <- readShapePoly("geonb_county-comte_shp/geonb_county-comte.shp")
 summary(comtes)
