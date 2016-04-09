@@ -9,7 +9,7 @@ de limites techniques: le jeu de données complet fait plusieurs Go en taille.
 
 ## <a name="spatial_analysis">Analyse et statistiques spatiales</a>
 
-[SA_1]: https://github.com/epgui/BIOL6293_Sandbox/images/SA_1.png "Graphique de Kent et Westmorland avec les points de cueillette des échantillons"
+[SA_1]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA_1.png?raw=true "Graphique de Kent et Westmorland avec les points de cueillette des échantillons"
 
 ```
 library(sp)
