@@ -10,6 +10,8 @@ de limites techniques: le jeu de données complet fait plusieurs Go en taille.
 ## <a name="spatial_analysis">Analyse et statistiques spatiales</a>
 
 [SA_1]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA_1.png?raw=true "Graphique de Kent et Westmorland avec les points de cueillette des échantillons"
+[SA_2]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA_2.png?raw=true "Graphique de Kent et Westmorland avec les points de cueillette des échantillons"
+[SA_3]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA_3.png?raw=true "Graphique de Kent et Westmorland avec les points de cueillette des échantillons"
 
 ```
 library(sp)
@@ -19,6 +21,7 @@ library(classInt)
 library(GISTools)
 library(raster)
 library(rgdal)
+#library(SDMTools)
 
 # Solution for file path found here: https://gist.github.com/jennybc/362f52446fe1ebc4c49f
 setwd(file.path(PROJHOME, "data"))
@@ -60,7 +63,6 @@ summary(coordonnees)
 
 #Fais un graphique de KENT et Westmorland avec les points de ceuillettes des échantillons
 plot(comteswgs.84[5,], xlab = "Longitude", ylab = "Latitude", axes = TRUE, main = "Comté de KENT")
-
 >>
 ```
 
@@ -68,13 +70,23 @@ plot(comteswgs.84[5,], xlab = "Longitude", ylab = "Latitude", axes = TRUE, main 
 
 ```
 plot(comteswgs.84[9,], add=TRUE)
-plot(coordonnees, pch =21, cex = 0.7, bg="dodgerblue", add = TRUE)
+>>
+```
 
+![Graphique de Kent et Westmorland avec les points de cueillette des échantillons][SA_2]
+
+```
+plot(coordonnees, pch =21, cex = 0.7, bg="dodgerblue", add = TRUE)
+>>
+```
+
+![Graphique de Kent et Westmorland avec les points de cueillette des échantillons][SA_3]
+
+```
 #labels
 pointLabel(coordonnees2$long, coordonnees2$lat, labels = coordonnees$ID, cex = 0.7, allowSmallOverlap = FALSE, col ="darkolivegreen")
 north.arrow(-64.65445,46.93657,len = 0.02, "N", col="light gray")
 
-#library(SDMTools)
 #Scalebar(-65.66533, 46.93655, distance = 1, unit = "km", scale = 0.01, t.cex = 0.7)
 
 #comtés de Kings
