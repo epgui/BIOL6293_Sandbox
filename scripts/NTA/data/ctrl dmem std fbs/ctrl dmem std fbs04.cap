@@ -1,0 +1,25 @@
+[CaptureSettings]
+CaptureAppBuild=0025
+CameraType=4
+Operator=Guillaume
+SampleName=exo dep fbs 50x dil
+Diluent=
+Concentration=
+Pretreatment=
+Remarks=
+TimeCaptured=15:22:47  08/04/2016
+PixelSize=181
+SliderShutter=1300
+Shutter=1218
+Gain=512
+Brightness=1
+Gamma=0
+FramesPerSecond=25.00
+DurationFrames=749
+DurationSeconds=29
+Skips=0
+ManualSensorUsed=1
+SensorTemp=26.1
+Interleaved=0
+CameraHistogramMin=0
+CameraHistogramMax=1885
