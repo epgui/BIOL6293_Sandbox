@@ -142,3 +142,14 @@ plot(land.grid2, add = TRUE, axes = FALSE)
 plot(land.grid2, col=palette, main="Concentration en radium (pg/L) au Nouveau-Brunswick", axes = FALSE)
 plot(comteswgs.84, add=TRUE, axes = FALSE)
 north.arrow(-64.000,47.0000,len = 0.09, "N", col="light gray")
+
+#Représentation des échantillons de Kent en fonction de leurs concentrations en radium
+class(coordonnees)
+conc <- coordonnees2$Conc
+break.points <- c(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35)
+groups <- cut(conc, break.points, include.lowest = TRUE, label = FALSE)
+palette2 <- brewer.pal(7, "YlOrRd")
+plot(comteswgs.84[5,], axes = TRUE, main = "Concentration en radium dans les eaux souterraines de puits du comté de Kent")
+plot(coordonnees, pch = 21, bg = palette2[groups], add = TRUE)
+north.arrow(-64.65445,46.93657,len = 0.02, "N", col="light gray")
+legend(-65.9, 47.2, legend=c("<0.05","0.05 à 0.1", "0.1 à 0.15", "0.15 à 0.2","0.2 à 0.25", "0.25 à 0,30", ">0.30"), pch=21, pt.bg=palette2, cex=0.6, title="Concentration Ra (pg/L)")
