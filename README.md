@@ -179,6 +179,7 @@ north.arrow(-64.000,47.0000,len = 0.09, "N", col="light gray")
 [FC_2]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_2.png?raw=true "Graphe de SS et FS pour le premier jeu de données"
 
 Vérifiez que vous avez bel et bien la dernière version de R à partir de la console de R:
+
 `> version`
 
 Vous pouvez obtenir la dernière version de R ici: https://www.r-project.org/
@@ -186,10 +187,12 @@ Vous pouvez obtenir la dernière version de R ici: https://www.r-project.org/
 ### Installation de Bioconductor
 Pour accéder aux librairies de cytométrie en flux, il faut d'abord installer Bioconductor.
 Dans la console de R, tappez:
+
 `> setRepositories()`
 
 Ensuite, sélectionnez CRAN et BioC software, par exemple en tappant dans la console de R, selon les
 options qui vous sont présentées:
+
 `> 1 2`
 
 Vous pouvez maintenant accéder aux librairies de Bioconductor (sauf flowQ qui ne marchera pas encore)
@@ -206,13 +209,16 @@ Attention! flowQ dépend de ImageMagick, que vous pouvez installer à partir des
 
 Sur Mac, la manière la plus simple d'installer ImageMagick est de dabord installer "Xcode Command Line Tools"
 à partir du Terminal:
+
 `$ xcode-select --install`
 
 puis d'installer MacPorts ici: https://www.macports.org/install.php
 puis d'installer ImageMagick à partir du Terminal:
+
 `$ sudo port install ImageMagick`
 
 Sur Mac, vous pouvez tester le succès de l'installation en tappant dans le Terminal:
+
 `$ which convert`
 
 Ça devrait donner un résultat qui ressemble à quelque chose comme `"/opt/local/bin/convert"`. Si ça vous donne
