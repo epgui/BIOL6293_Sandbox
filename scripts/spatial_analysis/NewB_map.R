@@ -1,6 +1,8 @@
 # L'installation de rgdal et de rgeos demande quelques étapes supplémentaires:
 # http://tlocoh.r-forge.r-project.org/mac_rgeos_rgdal.html
 
+#Part I visualisation des données
+
 library(sp)
 library(maptools)
 library(classInt)
@@ -145,11 +147,22 @@ north.arrow(-64.000,47.0000,len = 0.09, "N", col="light gray")
 
 #Représentation des échantillons de Kent en fonction de leurs concentrations en radium
 class(coordonnees)
-conc <- coordonnees2$Conc
+conc <- coordonnees$Conc
 break.points <- c(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35)
 groups <- cut(conc, break.points, include.lowest = TRUE, label = FALSE)
 palette2 <- brewer.pal(7, "YlOrRd")
-plot(comteswgs.84[5,], axes = TRUE, main = "Concentration en radium dans les eaux souterraines de puits du comté de Kent")
+plot(comteswgs.84[5,], axes = TRUE, main = "Concentration en radium dans les eaux souterraines de puits du comté de Kent", xlab = "Longitude", ylab ="Latitude")
 plot(coordonnees, pch = 21, bg = palette2[groups], add = TRUE)
 north.arrow(-64.65445,46.93657,len = 0.02, "N", col="light gray")
 legend(-65.9, 47.2, legend=c("<0.05","0.05 à 0.1", "0.1 à 0.15", "0.15 à 0.2","0.2 à 0.25", "0.25 à 0,30", ">0.30"), pch=21, pt.bg=palette2, cex=0.6, title="Concentration Ra (pg/L)")
+
+#Part II Analyse des données
+
+library(spdep)
+
+#Trouve le voisin immédiat de chaque point
+knn1 <- knearneigh(coordonnees, k = 1, longlat = TRUE, RANN = FALSE)$nn
+knn1
+
+#Mesure la corrélation entre 1 point et son plus proche voisin.
+cor.test(coordonnees$Conc, coordonnees$Conc[knn1])
