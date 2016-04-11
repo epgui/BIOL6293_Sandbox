@@ -9,11 +9,13 @@ de limites techniques: le jeu de données complet fait plusieurs Go en taille.
 
 ## <a name="spatial_analysis">Analyse et statistiques spatiales</a>
 
-[SA_1]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA_1.png?raw=true "Graphique de Kent et Westmorland avec les points de cueillette des échantillons"
-[SA_2]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA_2.png?raw=true "Graphique de Kent et Westmorland avec les points de cueillette des échantillons"
-[SA_3]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA_3.png?raw=true "Graphique de Kent et Westmorland avec les points de cueillette des échantillons"
+[SA_1]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-1.PNG?raw=true "Graphique de Kent et Westmorland avec les points de cueillette des échantillons"
+[SA_2]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-2.PNG?raw=true "Graphique de Kings avec les points de cueillette des échantillons"
+[SA_3]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-3.PNG?raw=true "Graphique de Albert avec les points de cueillette des échantillons"
+[SA_4]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-4.PNG?raw=true "Carte du Nouveau-Brunswick"
 
 ```
+
 # L'installation de rgdal et de rgeos demande quelques étapes supplémentaires:
 # http://tlocoh.r-forge.r-project.org/mac_rgeos_rgdal.html
 
@@ -78,18 +80,7 @@ map.scale(2555000,7460000,10000,"km",5,subdiv=2,tcol='black',scol='black',sfcol=
 >>
 ```
 
-![Graphique de Kent et Westmorland avec les points de cueillette des échantillons][SA-1]
-
-```
-
-![Graphique de Kent et Westmorland avec les points de cueillette des échantillons][SA_2]
-
-```
-plot(coordonnees, pch =21, cex = 0.7, bg="dodgerblue", add = TRUE)
->>
-```
-
-![Graphique de Kent et Westmorland avec les points de cueillette des échantillons][SA_3]
+![Graphique de Kent et Westmorland avec les points de cueillette des échantillons][SA_1]
 
 ```
 
@@ -109,6 +100,11 @@ pointLabel(coordonneeskings2$long, coordonneeskings2$lat, labels = coordonneeski
 north.arrow(-65.2000,45.9600,len = 0.02, "N", col="light gray")
 #map.scale(-66.5000, 46.0000, len = 0.3, "km", ndivs = 5, subdiv = 2, tcol='black',scol='black',sfcol='black')
 
+```
+
+![Graphique de Kings avec les points de cueillette des échantillons][SA_2]
+
+```
 #comtés de Albert
 coordonneesalbert <- read.table("coordonneshills.txt", sep = "\t", header = TRUE)
 coordonneesalbert2 <- read.table("coordonneshills.txt", sep = "\t", header = TRUE)
@@ -125,6 +121,12 @@ pointLabel(coordonneesalbert2$long, coordonneesalbert2$lat, labels = coordonnees
 north.arrow(-64.6000,46.0500,len = 0.01, "N", col="light gray")
 #map.scale(-65.3000, 46.0000, len = 0.3, "km", ndivs = 5, subdiv = 2, tcol='black',scol='black',sfcol='black')
 
+```
+
+![Graphique de Albert avec les points de cueillette des échantillons][SA_3]
+
+```
+
 #Carte composite NB
 plot(comteswgs.84, main = "Nouveau-Brunswick")
 plot(coordonnees, pch =21,cex = 0.5, bg="dodgerblue", axes = TRUE, add = TRUE)
@@ -132,6 +134,12 @@ plot(coordonneeskings, pch =21, cex = 0.5, bg="yellow", add = TRUE)
 plot(coordonneesalbert, pch =21, cex = 0.5, bg="red", add = TRUE)
 north.arrow(-64.000,47.0000,len = 0.09, "N", col="light gray")
 #map.scale(-68.0000, 45.5000, len = 1, "km", ndivs = 5, subdiv = 2, tcol='black',scol='black',sfcol='black')
+
+```
+
+![Carte du Nouveau-Brunswick avec points d'échantillonnage][SA_4]
+
+```
 
 #Raster Brute
 cell.length <- 0.2
