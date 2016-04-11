@@ -14,14 +14,20 @@ de limites techniques: le jeu de données complet fait plusieurs Go en taille.
 [SA_3]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA_3.png?raw=true "Graphique de Kent et Westmorland avec les points de cueillette des échantillons"
 
 ```
+# L'installation de rgdal et de rgeos demande quelques étapes supplémentaires:
+# http://tlocoh.r-forge.r-project.org/mac_rgeos_rgdal.html
+
+#Part I visualisation des données
+
 library(sp)
-library(rgeos)
 library(maptools)
 library(classInt)
 library(GISTools)
 library(raster)
-library(rgdal)
-#library(SDMTools)
+library(rgeos)    # Voir ci-dessus
+library(rgdal)    # Voir ci-dessus
+library(psych)
+library(moments)
 
 # Solution for file path found here: https://gist.github.com/jennybc/362f52446fe1ebc4c49f
 setwd(file.path(PROJHOME, "data"))
@@ -37,16 +43,11 @@ summary(comtes)
 
 #Crée un systéme de coordonnées(projection) pour la carte du Nouveau-Brunswick utilisant les longitudes et latitudes et le datum WGS84
 wgs.84 <- "+proj=longlat +datum=WGS84"
-
-#Transforme la projection EPSG 2953 en projection wgs.84
-comteswgs.84 <- spTransform(comtes, CRS(wgs.84))
-summary(comteswgs.84)
+epsg.2953 <- "+init=epsg:2953 +proj=sterea +lat_0=46.5 +lon_0=-66.5 +k=0.999912 +x_0=2500000 +y_0=7500000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0
++units=m +no_defs"
 
 #Lis le fichier comportant les coordonnées (longitude, latitude) des échantillons d'eaux souterraines du comtés de KENT
 coordonnees <- read.table("coordonnees.txt", sep = "\t", header = TRUE)
-
-#Crée une copie des coordonées pour les labels
-coordonnees2 <- read.table("coordonnees.txt", sep = "\t", header = TRUE)
 
 #La longitude est contenue dans la colonne 3 du fichier alors que la latitude est dans la colonne 2
 coordonnees
@@ -56,21 +57,29 @@ coordinates(coordonnees) <- c(3,2)
 class(coordonnees)
 summary(coordonnees)
 
-#Initialise la projection des coordonnées en wgs.84 é l'aide de epsg:4326
+#Initialise la projection des coordonnées en wgs.84 à l'aide de epsg:4326
 crs2 <- CRS("+init=epsg:4326")
 proj4string(coordonnees) <- crs2
 summary(coordonnees)
 
+#Transforme la projection wgs 84 des points de coordonnées en projection EPSG2953 du Nouveau-Brunswick
+coord.epsg2953 <- spTransform(coordonnees, CRS(epsg.2953))
+summary(coord.epsg2953)
+
 #Fais un graphique de KENT et Westmorland avec les points de ceuillettes des échantillons
-plot(comteswgs.84[5,], xlab = "Longitude", ylab = "Latitude", axes = TRUE, main = "Comté de KENT")
+plot(comtes[5,], xlab = "Longitude", ylab = "Latitude", axes = TRUE, main = "Comté de KENT")
+plot(comtes[9,], add=TRUE)
+plot(coord.epsg2953, pch =21, cex = 0.7, bg="dodgerblue", add = TRUE)
+
+#labels
+pointLabel(coord.epsg2953@coords, labels = coordonnees$ID, cex = 0.7, allowSmallOverlap = FALSE, col ="darkolivegreen", offset = 0)
+north.arrow(2640000, 7545000,len = 1500, "N", col="light gray")
+map.scale(2555000,7460000,10000,"km",5,subdiv=2,tcol='black',scol='black',sfcol='black')
 >>
 ```
 
-![Graphique de Kent et Westmorland avec les points de cueillette des échantillons][SA_1]
+![Graphique de Kent et Westmorland avec les points de cueillette des échantillons][SA-1]
 
-```
-plot(comteswgs.84[9,], add=TRUE)
->>
 ```
 
 ![Graphique de Kent et Westmorland avec les points de cueillette des échantillons][SA_2]
@@ -83,11 +92,6 @@ plot(coordonnees, pch =21, cex = 0.7, bg="dodgerblue", add = TRUE)
 ![Graphique de Kent et Westmorland avec les points de cueillette des échantillons][SA_3]
 
 ```
-#labels
-pointLabel(coordonnees2$long, coordonnees2$lat, labels = coordonnees$ID, cex = 0.7, allowSmallOverlap = FALSE, col ="darkolivegreen")
-north.arrow(-64.65445,46.93657,len = 0.02, "N", col="light gray")
-
-#Scalebar(-65.66533, 46.93655, distance = 1, unit = "km", scale = 0.01, t.cex = 0.7)
 
 #comtés de Kings
 coordonneeskings <- read.table("coordonneskings.txt", sep = "\t", header = TRUE)
