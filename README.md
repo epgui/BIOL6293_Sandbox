@@ -7,12 +7,13 @@ mais on a trouvé des jeux de données similaires disponibles [en ligne](https:/
 pour en faire l'analyse. Seules les données de deux patients sont inclues dans le projet Github pour des raisons
 de limites techniques: le jeu de données complet fait plusieurs Go en taille.
 
-* L'installation de rgdal et de rgeos demande quelques étapes supplémentaires:
-* http://tlocoh.r-forge.r-project.org/mac_rgeos_rgdal.html
+
+## <a name="spatial_analysis">Analyse et statistiques spatiales</a>
 
 ### Part I : visualisation des données
 
-## <a name="spatial_analysis">Analyse et statistiques spatiales</a>
+* L'installation de rgdal et de rgeos demande quelques étapes supplémentaires:
+* http://tlocoh.r-forge.r-project.org/mac_rgeos_rgdal.html
 
 [SA_1]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-1.PNG?raw=true "Graphique de Kent et Westmorland avec les points de cueillette des échantillons"
 [SA_2]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-2.PNG?raw=true "Graphique de Kings avec les points de cueillette des échantillons"
@@ -86,7 +87,7 @@ plot(coord.epsg2953, pch =21, cex = 0.7, bg="dodgerblue", add = TRUE)
 pointLabel(coord.epsg2953@coords, labels = coordonnees$ID, cex = 0.7, allowSmallOverlap = FALSE, col ="darkolivegreen", offset = 0)
 north.arrow(2640000, 7545000,len = 1500, "N", col="light gray")
 map.scale(2555000,7460000,10000,"km",5,subdiv=2,tcol='black',scol='black',sfcol='black')
->>
+
 ```
 
 ![Graphique de Kent et Westmorland avec les points de cueillette des échantillons][SA_1]
@@ -222,7 +223,7 @@ pointLabel(coord.epsg2953@coords, labels = coordonnees$ID, cex = 0.7, allowSmall
 
 ![Représentation des échantillons de Kent en fonction de leurs concentrations en radium][SA_7]
 
-```
+
 
 ###Part II : Analyse
 
