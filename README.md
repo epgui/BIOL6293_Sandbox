@@ -332,17 +332,17 @@ moran.test(coord.epsg2953$Conc, listw2U(spknear45))
 ![Moran Plot pour le comte de KENT][SA_9]
 
 > moran.test(coord.epsg2953$Conc, listw2U(spknear45))
-
-Moran I test under randomisation
-
-data:  coord.epsg2953$Conc  
-weights: listw2U(spknear45)  
-
-Moran I statistic standard deviate = -0.97645, p-value = 0.8356
-alternative hypothesis: greater
-sample estimates:
-Moran I statistic       Expectation          Variance 
-      -0.03682426       -0.02222222        0.00022363 
+>
+>Moran I test under randomisation
+>
+>data:  coord.epsg2953$Conc  
+>weights: listw2U(spknear45)  
+>
+>Moran I statistic standard deviate = -0.97645, p-value = 0.8356
+>alternative hypothesis: greater
+>sample estimates:
+>Moran I statistic       Expectation          Variance 
+>      -0.03682426       -0.02222222        0.00022363 
 
 ```
 
@@ -356,19 +356,19 @@ summary(modele1)
 
 >Call:
 >lm(formula = Conc ~ Age + Profondeur, data = coord.epsg2953)
-
+>
 >Residuals:
 >      Min        1Q    Median        3Q       Max 
 >-0.119869 -0.055732 -0.009389  0.035900  0.214515 
-
+>
 >Coefficients:
->			Estimate Std. Error t value Pr(>|t|)   
+>               Estimate Std. Error t value Pr(>|t|)   
 >(Intercept)  1.172e-01  3.838e-02   3.053  0.00397 **
->Age         -1.515e-03  1.090e-03  -1.390  0.17206   
->Profondeur   9.341e-05  2.607e-04   0.358  0.72197   
->---
+> Age         -1.515e-03  1.090e-03  -1.390  0.17206   
+> Profondeur   9.341e-05  2.607e-04   0.358  0.72197   
+>
 >Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
+>
 >Residual standard error: 0.08431 on 41 degrees of freedom
 >  (2 observations deleted due to missingness)
 >Multiple R-squared:  0.05209,	Adjusted R-squared:  0.005852 
