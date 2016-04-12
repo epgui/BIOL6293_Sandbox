@@ -7,19 +7,28 @@ mais on a trouvé des jeux de données similaires disponibles [en ligne](https:/
 pour en faire l'analyse. Seules les données de deux patients sont inclues dans le projet Github pour des raisons
 de limites techniques: le jeu de données complet fait plusieurs Go en taille.
 
+* L'installation de rgdal et de rgeos demande quelques étapes supplémentaires:
+* http://tlocoh.r-forge.r-project.org/mac_rgeos_rgdal.html
+
+### Part I : visualisation des données
+
 ## <a name="spatial_analysis">Analyse et statistiques spatiales</a>
 
 [SA_1]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-1.PNG?raw=true "Graphique de Kent et Westmorland avec les points de cueillette des échantillons"
 [SA_2]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-2.PNG?raw=true "Graphique de Kings avec les points de cueillette des échantillons"
 [SA_3]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-3.PNG?raw=true "Graphique de Albert avec les points de cueillette des échantillons"
 [SA_4]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-4.PNG?raw=true "Carte du Nouveau-Brunswick"
+[SA_5]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-5.PNG?raw=true "raster NB"
+[SA_6]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-6.PNG?raw=true "raster NB fine"
+[SA_7]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-7.PNG?raw=true "Concentration par échantillon KENT"
+[SA_8]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-8.png?raw=true "Corrélation de la concentrations en radium en fonction des voisins"
+[SA_9]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-9.png?raw=true "Moran plot des concentrations en radium dans le comtés de KENT"
+[SA_10]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-10.png?raw=true "Histogramme des concentrations en radium distribution générale"
+[SA_11]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-11.png?raw=true "Histogramme des résidus de l'anova après transformation"
+[SA_12]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-12.PNG?raw=true "Analyse des résidus après anova après transformation"
+[SA_13]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-13.PNG?raw=true "ANOVA représentée graphiquement"
 
 ```
-
-# L'installation de rgdal et de rgeos demande quelques étapes supplémentaires:
-# http://tlocoh.r-forge.r-project.org/mac_rgeos_rgdal.html
-
-#Part I visualisation des données
 
 library(sp)
 library(maptools)
@@ -86,19 +95,18 @@ map.scale(2555000,7460000,10000,"km",5,subdiv=2,tcol='black',scol='black',sfcol=
 
 #comtés de Kings
 coordonneeskings <- read.table("coordonneskings.txt", sep = "\t", header = TRUE)
-coordonneeskings2 <- read.table("coordonneskings.txt", sep = "\t", header = TRUE)
 coordinates(coordonneeskings) <- c(3,2)
 proj4string(coordonneeskings) <- crs2
-summary(coordonneeskings)
+coord.kings <- spTransform(coordonneeskings, CRS(epsg.2953))
 
 #Fait un graphique de Kings avec les points de ceuillettes des échantillons
-plot(comteswgs.84[8,], xlab = "Longitude", ylab = "Latitude", axes = TRUE, main = "Comté de KINGS")
-plot(coordonneeskings, pch =21, cex = 0.7, bg="dodgerblue", add = TRUE)
+plot(comtes[8,], xlab = "Longitude", ylab = "Latitude", axes = TRUE, main = "Comté de KINGS")
+plot(coord.kings, pch =21, cex = 0.7, bg="dodgerblue", add = TRUE)
 
 #labels
-pointLabel(coordonneeskings2$long, coordonneeskings2$lat, labels = coordonneeskings$ID, cex = 0.7, allowSmallOverlap = FALSE, col ="darkolivegreen")
-north.arrow(-65.2000,45.9600,len = 0.02, "N", col="light gray")
-#map.scale(-66.5000, 46.0000, len = 0.3, "km", ndivs = 5, subdiv = 2, tcol='black',scol='black',sfcol='black')
+pointLabel(coord.kings@coords, labels = coordonneeskings$ID, cex = 0.7, allowSmallOverlap = FALSE, col ="darkolivegreen", offset = 0)
+north.arrow(2600000, 7440000,len = 1500, "N", col="light gray")
+map.scale(2510000,7350000,10000,"km",5,subdiv=2,tcol='black',scol='black',sfcol='black')
 
 ```
 
@@ -107,19 +115,18 @@ north.arrow(-65.2000,45.9600,len = 0.02, "N", col="light gray")
 ```
 #comtés de Albert
 coordonneesalbert <- read.table("coordonneshills.txt", sep = "\t", header = TRUE)
-coordonneesalbert2 <- read.table("coordonneshills.txt", sep = "\t", header = TRUE)
 coordinates(coordonneesalbert) <- c(3,2)
 proj4string(coordonneesalbert) <- crs2
-summary(coordonneesalbert)
+coord.albert <- spTransform(coordonneesalbert, CRS(epsg.2953))
 
-#Fait un graphique du comtés de Albert avec les points de ceuillettes des échantillons prés de Hillsborough
-plot(comteswgs.84[14,], xlab = "Longitude", ylab = "Latitude", axes = TRUE, main = "Comté de Albert")
-plot(coordonneesalbert, pch =21, cex = 0.7, bg="dodgerblue", add = TRUE)
+#Fait un graphique du comtés de Albert avec les points de ceuillettes des échantillons près de Hillsborough
+plot(comtes[14,], xlab = "Longitude", ylab = "Latitude", axes = TRUE, main = "Comté de Albert")
+plot(coord.albert, pch =21, cex = 0.7, bg="dodgerblue", add = TRUE)
 
 #labels
-pointLabel(coordonneesalbert2$long, coordonneesalbert2$lat, labels = coordonneesalbert$ID, cex = 0.7, allowSmallOverlap = FALSE, col ="darkolivegreen")
-north.arrow(-64.6000,46.0500,len = 0.01, "N", col="light gray")
-#map.scale(-65.3000, 46.0000, len = 0.3, "km", ndivs = 5, subdiv = 2, tcol='black',scol='black',sfcol='black')
+pointLabel(coord.albert@coords, labels = coordonneesalbert$ID, cex = 0.7, allowSmallOverlap = FALSE, col ="darkolivegreen", offset = 0)
+north.arrow(2647000, 7450000,len = 1000, "N", col="light gray")
+map.scale(2605000,7440000,10000,"km",5,subdiv=2,tcol='black',scol='black',sfcol='black')
 
 ```
 
@@ -128,12 +135,12 @@ north.arrow(-64.6000,46.0500,len = 0.01, "N", col="light gray")
 ```
 
 #Carte composite NB
-plot(comteswgs.84, main = "Nouveau-Brunswick")
-plot(coordonnees, pch =21,cex = 0.5, bg="dodgerblue", axes = TRUE, add = TRUE)
-plot(coordonneeskings, pch =21, cex = 0.5, bg="yellow", add = TRUE)
-plot(coordonneesalbert, pch =21, cex = 0.5, bg="red", add = TRUE)
-north.arrow(-64.000,47.0000,len = 0.09, "N", col="light gray")
-#map.scale(-68.0000, 45.5000, len = 1, "km", ndivs = 5, subdiv = 2, tcol='black',scol='black',sfcol='black')
+plot(comtes, main = "Nouveau-Brunswick", axes = FALSE)
+plot(coord.epsg2953, pch =21,cex = 0.5, bg="dodgerblue", add = TRUE)
+plot(coord.kings, pch =21, cex = 0.5, bg="yellow", add = TRUE)
+plot(coord.albert, pch =21, cex = 0.5, bg="red", add = TRUE)
+north.arrow(2660000, 7550000,len = 5000, "N", col="light gray")
+map.scale(2350000,7310000,100000,"km",5,subdiv=20,tcol='black',scol='black',sfcol='black')
 
 ```
 
@@ -143,11 +150,12 @@ north.arrow(-64.000,47.0000,len = 0.09, "N", col="light gray")
 
 #Raster Brute
 cell.length <- 0.2
-bbox(comteswgs.84)
-xmin <- bbox(comteswgs.84)[1,1]
-xmax <- bbox(comteswgs.84)[1,2]
-ymin <- bbox(comteswgs.84)[2,1]
-ymax <- bbox(comteswgs.84)[2,2]
+comtes2 <- spTransform(comtes, CRS(wgs.84))
+bbox(comtes2)
+xmin <- bbox(comtes2)[1,1]
+xmax <- bbox(comtes2)[1,2]
+ymin <- bbox(comtes2)[2,1]
+ymax <- bbox(comtes2)[2,2]
 ncol <- round((xmax - xmin)/cell.length, 0)
 nrow <- round((ymax - ymin)/cell.length, 0)
 ncol
@@ -159,31 +167,108 @@ ys <- dataconc[,2]
 xy <- cbind(xs,ys)
 x <- dataconc$Conc
 land.grid = rasterize(xy, blank.grid, x, mean)
-plot(comteswgs.84, main = "Nouveau-Brunswick", axes = TRUE)
+plot(comtes2, main = "Nouveau-Brunswick", axes = TRUE)
 plot(land.grid, add = TRUE, axes = FALSE)
 
 #Changement de couleur et d'intervale.
 palette <- brewer.pal(5, "YlOrRd")
 plot(land.grid, col=palette, main="Concentration en radium (pg/L) au Nouveau-Brunswick", axes = FALSE)
-plot(comteswgs.84, add=TRUE, axes = FALSE)
+plot(comtes2, add=TRUE, axes = FALSE)
 north.arrow(-64.000,47.0000,len = 0.09, "N", col="light gray")
+
+```
+
+![Carte raster du Nouveau-Brunswick avec définition brute][SA_5]
+
+```
 
 #Raster définition plus fine cell length plus petite
 cell.length <- 0.03
-bbox(comteswgs.84)
+bbox(comtes2)
 ncol2 <- round((xmax - xmin)/cell.length, 0)
 nrow2 <- round((ymax - ymin)/cell.length, 0)
 ncol2
 nrow2
 blank.grid2 <- raster(ncols=ncol2, nrows=nrow2, xmn=xmin, xmx=xmax, ymn=ymin, ymx=ymax)
 land.grid2 = rasterize(xy, blank.grid2, x, mean)
-plot(comteswgs.84, main = "Nouveau-Brunswick", axes = TRUE)
+plot(comtes2, main = "Nouveau-Brunswick", axes = TRUE)
 plot(land.grid2, add = TRUE, axes = FALSE)
 
 #Changement de couleur et d'intervale.
 plot(land.grid2, col=palette, main="Concentration en radium (pg/L) au Nouveau-Brunswick", axes = FALSE)
-plot(comteswgs.84, add=TRUE, axes = FALSE)
+plot(comtes2, add=TRUE, axes = FALSE)
 north.arrow(-64.000,47.0000,len = 0.09, "N", col="light gray")
+
+```
+
+![Carte raster du Nouveau-Brunswick avec définition fine][SA_6]
+
+```
+
+#Représentation des échantillons de Kent en fonction de leurs concentrations en radium
+class(coord.epsg2953)
+conc <- coordonnees$Conc
+break.points <- c(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35)
+groups <- cut(conc, break.points, include.lowest = TRUE, label = FALSE)
+palette2 <- brewer.pal(7, "YlOrRd")
+plot(comtes[5,], axes = TRUE, main = "Concentration en radium dans les eaux souterraines de puits du comté de Kent")
+plot(coord.epsg2953, pch = 21, bg = palette2[groups], add = TRUE)
+north.arrow(2640000, 7545000,len = 1500, "N", col="light gray")
+map.scale(2640000,7565000,10000,"km",5,subdiv=2,tcol='black',scol='black',sfcol='black')
+legend(2550000, 7565000, legend=c("<0.05","0.05 à 0.1", "0.1 à 0.15", "0.15 à 0.2","0.2 à 0.25", "0.25 à 0,30", ">0.30"), pch=21, pt.bg=palette2, cex=0.6, title="Concentration Ra (pg/L)")
+pointLabel(coord.epsg2953@coords, labels = coordonnees$ID, cex = 0.7, allowSmallOverlap = FALSE, col ="darkolivegreen")
+
+```
+
+![Représentation des échantillons de Kent en fonction de leurs concentrations en radium][SA_7]
+
+```
+
+###Part II : Analyse
+
+```
+
+#Analyse spatiale recherche du voisin
+library(spdep)
+knn1 <- knearneigh(coord.epsg2953, k = 1, longlat = FALSE, RANN = FALSE)$nn
+knn1
+cor.test(coord.epsg2953$Conc, coord.epsg2953$Conc[knn1])
+
+```
+
+`> cor.test(coord.epsg2953$Conc, coord.epsg2953$Conc[knn1])
+
+	Pearson's product-moment correlation
+
+data:  coord.epsg2953$Conc and coord.epsg2953$Conc[knn1]
+t = 2.282, df = 44, p-value = 0.02738
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.03866938 0.56249265
+sample estimates:
+      cor 
+0.3253155`
+
+```
+
+#Trouve les 45 plus proche voisin
+knear45 <- knearneigh(coord.epsg2953, k=45, longlat = FALSE, RANN=FALSE)
+
+#Crée un objet pour stocker les corrélations
+correlations <- vector(mode="numeric", length=45)
+
+for (i in 1: 45) {
+  correlations[i] <- cor(coord.epsg2953$Conc, coord.epsg2953$Conc[knear45$nn[,i]])
+}
+correlations
+
+plot(correlations, xlab="nth nearest neighbour", ylab="Correlation")
+lines(lowess(correlations, f=1/10), col="blue")		# Ajoute une ligne entre chaque point
+
+```
+
+![Graphique correlation de la concentration en radium entre voisins dans KENT][SA_8]
+
 ```
 
 ## <a name="flow_cytometry">Analyse statistique de cytométrie en flux</a>
