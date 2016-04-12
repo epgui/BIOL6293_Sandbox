@@ -237,9 +237,9 @@ cor.test(coord.epsg2953$Conc, coord.epsg2953$Conc[knn1])
 
 ```
 
-######> cor.test(coord.epsg2953$Conc, coord.epsg2953$Conc[knn1])
+> cor.test(coord.epsg2953$Conc, coord.epsg2953$Conc[knn1])
 
-	Pearson's product-moment correlation
+Pearson's product-moment correlation
 
 data:  coord.epsg2953$Conc and coord.epsg2953$Conc[knn1]
 t = 2.282, df = 44, p-value = 0.02738
@@ -282,7 +282,7 @@ np
 
 ```
 
-######46
+>46
 
 
 ```
@@ -301,7 +301,7 @@ head(d.weights, n=1)					# La liste des poids correspondants
 
 ```
 
-######> head(knear45$nn, n=1)					# La liste des voisins
+> head(knear45$nn, n=1)					# La liste des voisins
      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13] [,14] [,15] [,16] [,17] [,18] [,19] [,20] [,21] [,22] [,23] [,24] [,25]
 [1,]   12    2   36    4   42   38   30   41    3    35     7     8    13    31    28     5     6    39    11    26    19    20    37    10    18
      [,26] [,27] [,28] [,29] [,30] [,31] [,32] [,33] [,34] [,35] [,36] [,37] [,38] [,39] [,40] [,41] [,42] [,43] [,44] [,45]
@@ -314,6 +314,67 @@ head(d.weights, n=1)					# La liste des poids correspondants
 [34] 0.005733636 0.005680487 0.005645019 0.005218810 0.005166379 0.005134100 0.005091814 0.005071874 0.004332457 0.004082338 0.004037346
 [45] 0.003643757
 
+```
+
+knear45nb <- knn2nb(knear45)
+class(knear45nb)
+knear45nb
+
+#Examen de l'autoccorélation entre les points d'échantillons selon la concentration en radium
+spknear45 <- nb2listw(knear45nb, glist=d.weights, style="C")
+moran.plot(coord.epsg2953$Conc, spknear45, labels = TRUE)
+moran.test(coord.epsg2953$Conc, spknear45)
+moran.test(coord.epsg2953$Conc, listw2U(spknear45))
+```
+
+![Moran Plot pour le comte de KENT][SA_9]
+
+> moran.test(coord.epsg2953$Conc, listw2U(spknear45))
+
+	Moran I test under randomisation
+
+data:  coord.epsg2953$Conc  
+weights: listw2U(spknear45)  
+
+Moran I statistic standard deviate = -0.97645, p-value = 0.8356
+alternative hypothesis: greater
+sample estimates:
+Moran I statistic       Expectation          Variance 
+      -0.03682426       -0.02222222        0.00022363 
+
+```
+
+#Modèle pour déterminer ce qui influence la concentration en radium
+modele1 <- lm(Conc ~ Age + Profondeur, data = coord.epsg2953)
+summary(modele1)
+
+```
+
+> summary(modele1)
+
+Call:
+lm(formula = Conc ~ Age + Profondeur, data = coord.epsg2953)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.119869 -0.055732 -0.009389  0.035900  0.214515 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)   
+(Intercept)  1.172e-01  3.838e-02   3.053  0.00397 **
+Age         -1.515e-03  1.090e-03  -1.390  0.17206   
+Profondeur   9.341e-05  2.607e-04   0.358  0.72197   
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.08431 on 41 degrees of freedom
+  (2 observations deleted due to missingness)
+Multiple R-squared:  0.05209,	Adjusted R-squared:  0.005852 
+F-statistic: 1.127 on 2 and 41 DF,  p-value: 0.334
+
+
+
+  
 ## <a name="flow_cytometry">Analyse statistique de cytométrie en flux</a>
 [FC_1]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_1.png?raw=true "FS pour tous les jeux de données"
 [FC_2]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_2.png?raw=true "Graphe de SS et FS pour le premier jeu de données"
