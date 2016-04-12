@@ -235,7 +235,7 @@ knn1 <- knearneigh(coord.epsg2953, k = 1, longlat = FALSE, RANN = FALSE)$nn
 knn1
 cor.test(coord.epsg2953$Conc, coord.epsg2953$Conc[knn1])
 
-
+```
 
 ######> cor.test(coord.epsg2953$Conc, coord.epsg2953$Conc[knn1])
 
