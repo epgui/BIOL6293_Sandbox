@@ -512,7 +512,8 @@ plot(concentrations$Comtes, sqrtlogConc, xlab = "comtés", ylab = "sqrt(log10(Co
 
 ![Representation graphique de l'anova][SA_13]
 
-,,,#Comparaisons planifié KENT et HILLS et KINGS et HILLS
+``` 
+#Comparaisons planifié KENT et HILLS et KINGS et HILLS
  contrasts(concentrations$Comtes) <- cbind(c(-1,1,0), c(1,0,-1))
  contrasts(concentrations$Comtes)
       [,1] [,2]
