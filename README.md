@@ -306,6 +306,7 @@ head(d.weights, n=1)					# La liste des poids correspondants
 [1,]   12    2   36    4   42   38   30   41    3    35     7     8    13    31    28     5     6    39    11    26    19    20    37    10    18
      [,26] [,27] [,28] [,29] [,30] [,31] [,32] [,33] [,34] [,35] [,36] [,37] [,38] [,39] [,40] [,41] [,42] [,43] [,44] [,45]
 [1,]    27    15    23    17    43    33     9    16    32    34    22    21    14    25    40    24    44    46    45    29
+
 > head(d.weights, n=1)					# La liste des poids correspondants
 [[1]]
  [1] 0.073842652 0.011499389 0.011046278 0.010463427 0.010377768 0.010226429 0.010213943 0.010003307 0.008616610 0.008556768 0.008503951
@@ -325,13 +326,14 @@ spknear45 <- nb2listw(knear45nb, glist=d.weights, style="C")
 moran.plot(coord.epsg2953$Conc, spknear45, labels = TRUE)
 moran.test(coord.epsg2953$Conc, spknear45)
 moran.test(coord.epsg2953$Conc, listw2U(spknear45))
+
 ```
 
 ![Moran Plot pour le comte de KENT][SA_9]
 
 > moran.test(coord.epsg2953$Conc, listw2U(spknear45))
 
-	Moran I test under randomisation
+Moran I test under randomisation
 
 data:  coord.epsg2953$Conc  
 weights: listw2U(spknear45)  
@@ -352,25 +354,25 @@ summary(modele1)
 
 > summary(modele1)
 
-Call:
-lm(formula = Conc ~ Age + Profondeur, data = coord.epsg2953)
+>Call:
+>lm(formula = Conc ~ Age + Profondeur, data = coord.epsg2953)
 
-Residuals:
-      Min        1Q    Median        3Q       Max 
--0.119869 -0.055732 -0.009389  0.035900  0.214515 
+>Residuals:
+>      Min        1Q    Median        3Q       Max 
+>-0.119869 -0.055732 -0.009389  0.035900  0.214515 
 
-Coefficients:
-              Estimate Std. Error t value Pr(>|t|)   
-(Intercept)  1.172e-01  3.838e-02   3.053  0.00397 **
-Age         -1.515e-03  1.090e-03  -1.390  0.17206   
-Profondeur   9.341e-05  2.607e-04   0.358  0.72197   
----
-Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+>Coefficients:
+>			Estimate Std. Error t value Pr(>|t|)   
+>(Intercept)  1.172e-01  3.838e-02   3.053  0.00397 **
+>Age         -1.515e-03  1.090e-03  -1.390  0.17206   
+>Profondeur   9.341e-05  2.607e-04   0.358  0.72197   
+>---
+>Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
-Residual standard error: 0.08431 on 41 degrees of freedom
-  (2 observations deleted due to missingness)
-Multiple R-squared:  0.05209,	Adjusted R-squared:  0.005852 
-F-statistic: 1.127 on 2 and 41 DF,  p-value: 0.334
+>Residual standard error: 0.08431 on 41 degrees of freedom
+>  (2 observations deleted due to missingness)
+>Multiple R-squared:  0.05209,	Adjusted R-squared:  0.005852 
+>F-statistic: 1.127 on 2 and 41 DF,  p-value: 0.334
 
 
 
