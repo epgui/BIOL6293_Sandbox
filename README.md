@@ -400,24 +400,106 @@ hist(concentrations$Conc)
 ```
 
 
-group: HILLS    
+>group: HILLS    
   vars  n mean   sd median trimmed  mad min  max range skew kurtosis   se    
 1    1 14 0.05 0.06   0.03    0.04 0.04   0 0.18  0.18 0.88    -0.83 0.02    
 `-------------------------------------------------------------------------------------------------------------` 
-group: KENT   
+>group: KENT   
   vars  n mean   sd median trimmed  mad min max range skew kurtosis   se   
 1    1 46 0.09 0.08   0.07    0.08 0.07   0 0.3   0.3  1.1      0.2 0.01    
 `-------------------------------------------------------------------------------------------------------------` 
-group: KINGS   
+>group: KINGS   
   vars n mean   sd median trimmed  mad  min  max range skew kurtosis   se   
 1    1 7 0.06 0.03   0.06    0.06 0.03 0.02 0.11   0.1 0.27    -1.53 0.01    
 
-  
+```
 
+ anova <- aov(concentrations$Conc ~ concentrations$Comtes)
+ summary(anova)
+                      Df Sum Sq Mean Sq F value Pr(F)
+concentrations$Comtes  2 0.0258 0.01292   2.194   0.12
+Residuals             64 0.3770 0.00589               
+ hist(anova$residuals)
+ agostino.test(anova$residuals)
+
+	D'Agostino skewness test
+
+data:  anova$residuals
+skew = 1.1799, z = 3.6102, p-value = 0.0003059
+alternative hypothesis: data have a skewness
+
+ #Les résidus ne sont pas normalement distribués
+ 
+ logConc <- log10(concentrations$Conc+1)
+ anova2 <- aov(logConc ~ concentrations$Comtes)
+ summary(anova2)
+                      Df  Sum Sq   Mean Sq F value Pr(F)
+concentrations$Comtes  2 0.00393 0.0019657   2.244  0.114
+Residuals             64 0.05606 0.0008759               
+ hist(anova2$residuals)
+ agostino.test(anova2$residuals)
+
+	D'Agostino skewness test
+
+data:  anova2$residuals
+skew = 1.0565, z = 3.3189, p-value = 0.0009038
+alternative hypothesis: data have a skewness
+
+ #Toujours pas
+ 
+ xConc <- 1/(1+concentrations$Conc)
+ anova3 <- aov(xConc ~ concentrations$Comtes)
+ summary(anova3)
+                      Df  Sum Sq  Mean Sq F value Pr(F)
+concentrations$Comtes  2 0.01701 0.008507   2.297  0.109
+Residuals             64 0.23703 0.003704               
+ hist(anova3$residuals)
+ agostino.test(anova3$residuals)
+
+	D'Agostino skewness test
+
+data:  anova3$residuals
+skew = -0.93883, z = -3.02300, p-value = 0.002503
+alternative hypothesis: data have a skewness
+
+ 
+ sqrtlogConc <- sqrt(logConc)
+ anova4 <- aov(sqrtlogConc ~ concentrations$Comtes)
+ summary(anova4)
+                      Df Sum Sq  Mean Sq F value Pr(F)  
+concentrations$Comtes  2 0.0580 0.029005   3.784  0.028 *
+Residuals             64 0.4906 0.007665                 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+ hist(anova4$residuals)
+ agostino.test(anova4$residuals)
+
+```
+
+![Histogramme des residus apres anova sur les données transformees][SA_11]
+
+```
+ D'Agostino skewness test
+
+data:  anova4$residuals
+skew = 0.13719, z = 0.49825, p-value = 0.6183
+alternative hypothesis: data have a skewness
+
+ summary(anova4$residuals)
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+-0.175000 -0.066140 -0.003878  0.000000  0.049600  0.164600 
+ 
+ #Présentation des résidus
+ layout(matrix(1:4, 2, 2))
+ plot(lm(sqrtlogConc ~ concentrations$Comtes), which = 1:4)  
+
+```
+
+![Presentation des residus apres anova][SA_12]
   
   
   
-  ## <a name="flow_cytometry">Analyse statistique de cytométrie en flux</a>
+## <a name="flow_cytometry">Analyse statistique de cytométrie en flux</a>
 [FC_1]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_1.png?raw=true "FS pour tous les jeux de données"
 [FC_2]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_2.png?raw=true "Graphe de SS et FS pour le premier jeu de données"
 [FC_3]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_3.png?raw=true "Plot all of the things like it's your last day on earth"
