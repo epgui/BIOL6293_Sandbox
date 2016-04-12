@@ -235,9 +235,9 @@ knn1 <- knearneigh(coord.epsg2953, k = 1, longlat = FALSE, RANN = FALSE)$nn
 knn1
 cor.test(coord.epsg2953$Conc, coord.epsg2953$Conc[knn1])
 
-```
 
-`> cor.test(coord.epsg2953$Conc, coord.epsg2953$Conc[knn1])
+
+######> cor.test(coord.epsg2953$Conc, coord.epsg2953$Conc[knn1])
 
 	Pearson's product-moment correlation
 
@@ -248,7 +248,7 @@ alternative hypothesis: true correlation is not equal to 0
  0.03866938 0.56249265
 sample estimates:
       cor 
-0.3253155`
+0.3253155
 
 ```
 
@@ -271,6 +271,48 @@ lines(lowess(correlations, f=1/10), col="blue")		# Ajoute une ligne entre chaque
 ![Graphique correlation de la concentration en radium entre voisins dans KENT][SA_8]
 
 ```
+
+#Création d'une matrice de poids basée sur la distance inverse
+d.matrix <- spDists(coord.epsg2953, coord.epsg2953, longlat = FALSE)
+d.matrix #Création d'une matrice de distance
+
+#Détermine le nombre de points
+np <- knear45$np
+np
+
+```
+
+######46
+
+
+```
+
+#Crée un vecteur pour stocké les poids
+d.weights <- vector(mode="list", length=np)
+
+for (i in 1:np) {						# Une boucle prenant chaque point
+  neighbours <- knear45$nn[i,]		# Trouve les voisins pour le point i
+  distances <- d.matrix[i,neighbours]	# Calcule la distance entre i et ses voisins
+  d.weights[[i]] <- 1/distances^0.5	# Calcule un poids entre i et chaque voisin en fonction de la distance qui les séparent
+}
+
+head(knear45$nn, n=1)					# La liste des voisins
+head(d.weights, n=1)					# La liste des poids correspondants
+
+```
+
+######> head(knear45$nn, n=1)					# La liste des voisins
+     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13] [,14] [,15] [,16] [,17] [,18] [,19] [,20] [,21] [,22] [,23] [,24] [,25]
+[1,]   12    2   36    4   42   38   30   41    3    35     7     8    13    31    28     5     6    39    11    26    19    20    37    10    18
+     [,26] [,27] [,28] [,29] [,30] [,31] [,32] [,33] [,34] [,35] [,36] [,37] [,38] [,39] [,40] [,41] [,42] [,43] [,44] [,45]
+[1,]    27    15    23    17    43    33     9    16    32    34    22    21    14    25    40    24    44    46    45    29
+> head(d.weights, n=1)					# La liste des poids correspondants
+[[1]]
+ [1] 0.073842652 0.011499389 0.011046278 0.010463427 0.010377768 0.010226429 0.010213943 0.010003307 0.008616610 0.008556768 0.008503951
+[12] 0.008458228 0.008449261 0.008277297 0.008273555 0.008222866 0.008148792 0.008121341 0.007919839 0.007700053 0.007195550 0.006922693
+[23] 0.006847181 0.006765893 0.006597946 0.006360170 0.006046376 0.005968267 0.005953109 0.005883492 0.005833687 0.005829958 0.005746118
+[34] 0.005733636 0.005680487 0.005645019 0.005218810 0.005166379 0.005134100 0.005091814 0.005071874 0.004332457 0.004082338 0.004037346
+[45] 0.003643757
 
 ## <a name="flow_cytometry">Analyse statistique de cytométrie en flux</a>
 [FC_1]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_1.png?raw=true "FS pour tous les jeux de données"
