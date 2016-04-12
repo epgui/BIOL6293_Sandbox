@@ -338,10 +338,10 @@ moran.test(coord.epsg2953$Conc, listw2U(spknear45))
 >data:  coord.epsg2953$Conc  
 >weights: listw2U(spknear45)  
 >
->Moran I statistic standard deviate = -0.97645, p-value = 0.8356
+>Moran I statistic standard deviate = -0.97645, p-value = 0.8356 
 >alternative hypothesis: greater
 >sample estimates:
->Moran I statistic       Expectation          Variance 
+>Moran I statistic		 Expectation		 Variance 
 >      -0.03682426       -0.02222222        0.00022363 
 
 ```
@@ -354,28 +354,50 @@ summary(modele1)
 
 > summary(modele1)
 
->Call:
->lm(formula = Conc ~ Age + Profondeur, data = coord.epsg2953)
+> Call:
+> lm(formula = Conc ~ Age + Profondeur, data = coord.epsg2953)
 >
->Residuals:
+> Residuals:
 >      Min        1Q    Median        3Q       Max 
->-0.119869 -0.055732 -0.009389  0.035900  0.214515 
+> -0.119869 -0.055732 -0.009389  0.035900  0.214515 
 >
->Coefficients:
+> Coefficients:
 >               Estimate Std. Error t value Pr(>|t|)   
->(Intercept)  1.172e-01  3.838e-02   3.053  0.00397 **
+> (Intercept)  1.172e-01  3.838e-02   3.053  0.00397 **
 > Age         -1.515e-03  1.090e-03  -1.390  0.17206   
 > Profondeur   9.341e-05  2.607e-04   0.358  0.72197   
 >
->Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 >
->Residual standard error: 0.08431 on 41 degrees of freedom
+> Residual standard error: 0.08431 on 41 degrees of freedom
 >  (2 observations deleted due to missingness)
->Multiple R-squared:  0.05209,	Adjusted R-squared:  0.005852 
->F-statistic: 1.127 on 2 and 41 DF,  p-value: 0.334
+> Multiple R-squared:  0.05209,	Adjusted R-squared:  0.005852 
+> F-statistic: 1.127 on 2 and 41 DF,  p-value: 0.334
 
+```
 
+#Comparaison entre les différents comtés.
+concentrations <- read.table("concentrations.txt", sep = "\t", header = TRUE)
+concentrations$Comtes <- as.factor(concentrations$Comtes)
 
+describeBy(concentrations$Conc, concentrations$Comtes) #disponible library psych
+hist(concentrations$Conc)
+
+```
+
+<
+group: HILLS
+  vars  n mean   sd median trimmed  mad min  max range skew kurtosis   se
+1    1 14 0.05 0.06   0.03    0.04 0.04   0 0.18  0.18 0.88    -0.83 0.02
+------------------------------------------------------------------------------------------------------------- 
+group: KENT
+  vars  n mean   sd median trimmed  mad min max range skew kurtosis   se
+1    1 46 0.09 0.08   0.07    0.08 0.07   0 0.3   0.3  1.1      0.2 0.01
+------------------------------------------------------------------------------------------------------------- 
+group: KINGS
+  vars n mean   sd median trimmed  mad  min  max range skew kurtosis   se
+1    1 7 0.06 0.03   0.06    0.06 0.03 0.02 0.11   0.1 0.27    -1.53 0.01
+>
   
 ## <a name="flow_cytometry">Analyse statistique de cytométrie en flux</a>
 [FC_1]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_1.png?raw=true "FS pour tous les jeux de données"
