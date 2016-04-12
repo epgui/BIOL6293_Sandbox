@@ -512,9 +512,7 @@ plot(concentrations$Comtes, sqrtlogConc, xlab = "comtés", ylab = "sqrt(log10(Co
 
 ![Representation graphique de l'anova][SA_13]
 
-,,,
-
-#Comparaisons planifié KENT et HILLS et KINGS et HILLS
+,,,#Comparaisons planifié KENT et HILLS et KINGS et HILLS
  contrasts(concentrations$Comtes) <- cbind(c(-1,1,0), c(1,0,-1))
  contrasts(concentrations$Comtes)
       [,1] [,2]
@@ -563,9 +561,9 @@ $`concentrations$Comtes`
                    diff          lwr        upr     p adj
 KENT-HILLS   0.07329242  0.009171837 0.13741300 0.0212582
 KINGS-HILLS  0.04869198 -0.048551702 0.14593565 0.4566905
-KINGS-KENT  -0.02460044 -0.109826965 0.06062608 0.7686623
+KINGS-KENT  -0.02460044 -0.109826965 0.06062608 0.7686623```
 
-```
+
   
 ## <a name="flow_cytometry">Analyse statistique de cytométrie en flux</a>
 [FC_1]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_1.png?raw=true "FS pour tous les jeux de données"
