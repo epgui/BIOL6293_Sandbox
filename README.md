@@ -239,16 +239,21 @@ cor.test(coord.epsg2953$Conc, coord.epsg2953$Conc[knn1])
 
 > cor.test(coord.epsg2953$Conc, coord.epsg2953$Conc[knn1])
 
-Pearson's product-moment correlation
+>Pearson's product-moment correlation
 
-data:  coord.epsg2953$Conc and coord.epsg2953$Conc[knn1]
-t = 2.282, df = 44, p-value = 0.02738
-alternative hypothesis: true correlation is not equal to 0
-95 percent confidence interval:
- 0.03866938 0.56249265
-sample estimates:
-      cor 
-0.3253155
+>data:  coord.epsg2953$Conc and coord.epsg2953$Conc[knn1]
+
+>t = 2.282, df = 44, p-value = 0.02738
+
+>alternative hypothesis: true correlation is not equal to 0
+
+>95 percent confidence interval:
+
+> 0.03866938 0.56249265
+
+>sample estimates:
+>      cor 
+>	0.3253155
 
 ```
 
@@ -496,8 +501,71 @@ alternative hypothesis: data have a skewness
 ```
 
 ![Presentation des residus apres anova][SA_12]
-  
-  
+
+```
+
+#Représentation graphique anova
+layout(matrix(1))
+plot(concentrations$Comtes, sqrtlogConc, xlab = "comtés", ylab = "sqrt(log10(Conc+1))", col = c("brown1", "lightblue", "darkgoldenrod1"), axes =TRUE, main="Comparaision ANOVA concentration en radium par comté")
+
+```  
+
+![Representation graphique de l'anova][SA_13]
+
+,,,
+
+#Comparaisons planifié KENT et HILLS et KINGS et HILLS
+ contrasts(concentrations$Comtes) <- cbind(c(-1,1,0), c(1,0,-1))
+ contrasts(concentrations$Comtes)
+      [,1] [,2]
+HILLS   -1    1
+KENT     1    0
+KINGS    0   -1
+ summary.lm(anova4)
+
+Call:
+aov(formula = sqrtlogConc ~ concentrations$Comtes)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.174951 -0.066136 -0.003878  0.049600  0.164613 
+
+Coefficients:
+                           Estimate Std. Error t value Pr(|t|)    
+(Intercept)                 0.10166    0.02340   4.345 5.09e-05 ***
+concentrations$ComtesKENT   0.07329    0.02672   2.743   0.0079 ** 
+concentrations$ComtesKINGS  0.04869    0.04053   1.201   0.2340    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.08755 on 64 degrees of freedom
+Multiple R-squared:  0.1057,	Adjusted R-squared:  0.0778 
+F-statistic: 3.784 on 2 and 64 DF,  p-value: 0.02797
+
+ 
+ #Comparasion non-planifié
+ anova(anova4)
+Analysis of Variance Table
+
+Response: sqrtlogConc
+                      Df  Sum Sq   Mean Sq F value  Pr(F)  
+concentrations$Comtes  2 0.05801 0.0290048   3.784 0.02797 *
+Residuals             64 0.49056 0.0076651                  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+ TukeyHSD(anova4)
+  Tukey multiple comparisons of means
+    95% family-wise confidence level
+
+Fit: aov(formula = sqrtlogConc ~ concentrations$Comtes)
+
+$`concentrations$Comtes`
+                   diff          lwr        upr     p adj
+KENT-HILLS   0.07329242  0.009171837 0.13741300 0.0212582
+KINGS-HILLS  0.04869198 -0.048551702 0.14593565 0.4566905
+KINGS-KENT  -0.02460044 -0.109826965 0.06062608 0.7686623
+
+```
   
 ## <a name="flow_cytometry">Analyse statistique de cytométrie en flux</a>
 [FC_1]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_1.png?raw=true "FS pour tous les jeux de données"
