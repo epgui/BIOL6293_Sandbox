@@ -588,6 +588,7 @@ KINGS-KENT  -0.02460044 -0.109826965 0.06062608 0.7686623
 [FC_2]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_2.png?raw=true "Graphe de SS et FS pour le premier jeu de données"
 [FC_3]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_3.png?raw=true "Plot all of the things like it's your last day on earth"
 [FC_3.1]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_3.1.png?raw=true "Plot all of the things like it's your last day on earth"
+[FC_3.2]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_3.2.png?raw=true "Plot all of the things like it's your last day on earth"
 
 ### Qu'est-ce que la cytométrie en flux?
 C'est une technique excessivement populaire en biochimie et en biologie médicale, mais peut-être moins dans certaines branches de la biologie ou de l'écologie. Le principe est illustré ci-dessous:
@@ -1035,6 +1036,10 @@ ggpairs(thing, lower = list(continuous = make.nice.plot))
 On peut rapidement comparer avec un jeu de données d'un patient atteint de AML:
 
 ![Plot all of the things like it's your last day on earth][FC_3.1]
+
+Pour mieux comparer, on peut faire un overlay des graphes en deux couleurs. En vert, le patient normal, en rouge, le patient diagnostiqué avec AML.
+
+![Plot all of the things like it's your last day on earth][FC_3.2]
 
 Cool, on a développé notre propre petite méthode graphique pour visualiser les données de cytométrie en flux! Maintenant amusons-nous avec des statistiques Bayésiennes et du machine-learning.
 
