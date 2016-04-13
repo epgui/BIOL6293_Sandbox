@@ -591,6 +591,7 @@ KINGS-KENT  -0.02460044 -0.109826965 0.06062608 0.7686623
 [FC_3.2]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_3.2.png?raw=true "Plot all of the things like it's your last day on earth"
 [FC_4]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_4.png?raw=true "BIC of 10 clusters"
 [FC_4.1]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_4.1.png?raw=true "Résultats du clustering"
+[FC_4.2]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_4.2.png?raw=true "Résultats du clustering avec 5 clusters"
 
 ### Qu'est-ce que la cytométrie en flux?
 C'est une technique excessivement populaire en biochimie et en biologie médicale, mais peut-être moins dans certaines branches de la biologie ou de l'écologie. Le principe est illustré ci-dessous:
@@ -1178,3 +1179,52 @@ plot(res2[[7]], data=patient4.2, level=0.8, z.cutoff=0)
 ```
 
 ![Résultats du clustering][FC_4.1]
+
+En regardant le résultat, et le plot du BIC ci-dessus, j'ai l'impression qu'on a peut-être fait un peu de overfitting. On peut expliquer cela par le fait que les données sont relativement dispersées et qu'il y a présence de populations très hétérogènes de cellules. Je ne connais pas assez bien l'AML pour améliorer le gating et simplifier le clustering... Mais ça serait assez simple à faire.
+
+On ne va pas trop se casser la tête, on va juste refaire l'analyse avec 5 clusters et voir qu'est-ce que ça donne.
+
+```
+ruleOutliers(res2[[5]]) <- list(level=0.90)
+
+    Rule of identifying outliers: 90% quantile
+
+ruleOutliers(res2[[5]]) <- list(z.cutoff=0.6)
+
+    Rule of identifying outliers: 90% quantile,
+                                  probability of  assignment < 0.6
+
+summary(res2[[5]])
+
+** Experiment Information **
+Experiment name: Flow Experiment
+Variables used: FL1 FL2
+** Clustering Summary **
+Number of clusters: 5
+Proportions: 0.08915784 0.05170442 0.3089145 0.1352291 0.4149942
+** Transformation Parameter **
+lambda: 1.096455
+** Information Criteria **
+Log likelihood: -2378.089
+BIC: -5062.323
+ICL: -35045.64
+** Data Quality **
+Number of points filtered from above: 0 (0%)
+Number of points filtered from below: 168 (0.62%)
+Rule of identifying outliers: 90% quantile,
+                              probability of  assignment < 0.6
+Number of outliers: 4970 (18.27%)
+Uncertainty summary:
+
+ruleOutliers(res2[[5]]) <- list(level=0.95)
+```
+
+On voit qu'on a moins de outliers avec 5 clusters que tout à l'heure avec 7 clusters. C'est encourageant, c'est peut-être un signe que les nouveaux clusters représentent mieux l'ensemble des données!
+
+```
+plot(res2[[5]], data=patient4.2, level=0.8, z.cutoff=0)
+```
+
+![Résultats du clustering avec 5 clusters][FC_4.2]
+
+Ça parait pas mal plus raisonnable à vue d'oeil!
