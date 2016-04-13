@@ -571,7 +571,7 @@ hist(concentrations$Conc)
 
 ```
 
-
+```
 >group: HILLS    
   vars  n mean   sd median trimmed  mad min  max range skew kurtosis   se    
 1    1 14 0.05 0.06   0.03    0.04 0.04   0 0.18  0.18 0.88    -0.83 0.02    
