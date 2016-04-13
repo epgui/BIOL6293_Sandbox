@@ -843,7 +843,7 @@ filter_result <- filter(pt4_fs, rectangleGate("FS" = c(-Inf, largest_FS)))
 pt4_fs_trunc <- Subset(pt4_fs, filter_result)
 
 # Vérifier le graphe
-plot(as.numeric(exprs(pt4_fs_trunc[[1]]$SS)) ~ as.numeric(exprs(pt4_fs_trunc[[1]]$FS)))
+plot(as.numeric(exprs(pt4_fs_trunc[[1]]$SS)) ~ as.numeric(exprs(pt4_fs_trunc[[1]]$FS)), ylab="SSC (linéaire)", xlab="FSC (linéaire)")
 ```
 
 ![Graphe des données non-transformées][FC_0.1]
