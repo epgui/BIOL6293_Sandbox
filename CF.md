@@ -1,3 +1,5 @@
+[< Retour à l'index](https://github.com/epgui/BIOL6293_Sandbox/) | [Analyse spatiale](https://github.com/epgui/BIOL6293_Sandbox/blob/master/AS.md)
+
 ## <a name="flow_cytometry">Analyse des données de cytométrie en flux</a>
 [FC_workflow]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_workflow.png?raw=true "Workflow de cytométrie en flux"
 [FC_0.1]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_0.1.png?raw=true "Graphe des données linéaires"
@@ -687,4 +689,4 @@ hist(res2[[5]], data=patient4.2, subset="FL2")
 ### La prochaine étape
 Après avoir réussi à réconcilier ggplot2 avec flowClust, il serait bien de passer à de vrais méthodes Bayésiennes!
 
-## Merci!
+[< Retour à l'index](https://github.com/epgui/BIOL6293_Sandbox/) | [Analyse spatiale](https://github.com/epgui/BIOL6293_Sandbox/blob/master/AS.md)

@@ -1,3 +1,5 @@
+[< Retour à l'index](https://github.com/epgui/BIOL6293_Sandbox/) | [Cytométrie en flux >](https://github.com/epgui/BIOL6293_Sandbox/blob/master/CF.md)
+
 ## <a name="spatial_analysis">Analyse et statistiques spatiales</a>
 
 ### Part I : visualisation des données
@@ -735,3 +737,5 @@ KINGS-HILLS  0.04869198 -0.048551702 0.14593565 0.4566905
 KINGS-KENT  -0.02460044 -0.109826965 0.06062608 0.7686623
 
 ```
+
+[< Retour à l'index](https://github.com/epgui/BIOL6293_Sandbox/) | [Cytométrie en flux >](https://github.com/epgui/BIOL6293_Sandbox/blob/master/CF.md)
