@@ -579,7 +579,7 @@ C'est une technique excessivement populaire en biochimie et en biologie médical
 ![Workflow de cytométrie en flux][FC_workflow]
 
 ### Visualisation des données
-L'instrument produit un fichier .FCS gigantesque qui contient l'information d'intensité lumineuse capté par les détecteurs SSC, FSC, et un certain nombre de détecteurs à fluorescence (par exemple FL1, FL2, FL3, FL4, FL5, FL6, FL7, ...) selon l'appareil utilisé. Le premier problème, c'est de visualiser toutes ces données pour avoir une impression initiale de quoi il s'agit.
+L'instrument produit un fichier [de format standard .FCS](https://en.wikipedia.org/wiki/Flow_Cytometry_Standard) gigantesque qui contient l'information d'intensité lumineuse capté par les détecteurs SSC, FSC, et un certain nombre de détecteurs à fluorescence (par exemple FL1, FL2, FL3, FL4, FL5, FL6, FL7, ...) selon l'appareil utilisé. Le premier problème, c'est de visualiser toutes ces données pour avoir une impression initiale de quoi il s'agit.
 
 ### Préparation de l'environnement R
 La cytométrie en flux est une technique excessivement populaire. Initialement, la seule manière d'analyser les données c'était d'avoir recours aux logiciels commerciaux qui viennent avec l'appareil ou qu'on peut acheter de commerçants indépendants. Tous les appareils ont leurs propres logiciels, et il existe une grande variété de logiciels disponibles. Le problème c'est que les méthodes d'analyse de ces logiciels ne sont pas open source, et c'est donc très suboptimal en termes de reproductibilité.
