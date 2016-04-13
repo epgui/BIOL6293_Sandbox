@@ -883,12 +883,23 @@ Pour estimer les paramètres optimaux de la transformation biexponentielle,il ex
 * w: la largeur de la zone de linéarisation, qui peut être estimée par (m - log(t/abs(r)))/2 mais qui peut nécessiter quelques ajustements.
 * a: ce paramètre est moins important mais peut être utilisé pour tasser davantage les valeurs vers les positifs après avoir choisi les autres paramètres. On peut habituellement le laisser à 0.
 
-Bref je vous épargne les essais et erreurs, mais j'en suis arrivé aux paramètres suivants à partir des graphes qu'on vient de générer. On effectue la transformation des données!
+Bref je vous épargne les essais et erreurs, mais j'en suis arrivé aux paramètres suivants à partir des graphes qu'on vient de générer, et les graphes des channels de fluorescence (FL1 à FL5), que je ne montre pas ici. On effectue la transformation des données!
 
 ```
-lgcl_FS <- logicleTransform(w=0.6, t=1300000, m=4.5, a=0)
-lgcl_SS <- logicleTransform(w=0.5, t=500, m=3, a=0)
-tData <- transform(pt4_fs_trunc, FS=lgcl_FS(FS), SS=lgcl_SS(SS))
+lgcl_FS  <- logicleTransform(w=0.60, t=1300000, m=4.5, a=0)
+lgcl_SS  <- logicleTransform(w=0.50, t=500,     m=3,   a=0)
+lgcl_FL1 <- logicleTransform(w=0.79, t=130000,  m=4.5, a=0)
+lgcl_FL2 <- logicleTransform(w=0.92, t=100000,  m=4.5, a=0)
+lgcl_FL3 <- logicleTransform(w=0.92, t=100000,  m=4.5, a=0)
+lgcl_FL4 <- logicleTransform(w=0.46, t=250000,  m=4.5, a=0)
+lgcl_FL5 <- logicleTransform(w=1.17, t=60000,   m=4.5, a=0)
+tData <- transform(pt4_fs_trunc, FS =lgcl_FS(FS),
+                                 SS =lgcl_SS(SS),
+                                 FL1=lgcl_FL1(FL1),
+                                 FL2=lgcl_FL2(FL2),
+                                 FL3=lgcl_FL3(FL3),
+                                 FL4=lgcl_FL4(FL4),
+                                 FL5=lgcl_FL5(FL5))
 
 # tData n'est pas un dataFrame standard de R... c'est un objet de type 'flowFrame' défini
 # par la librairie flowCore. On va le convertir en dataframe standard plus simple à manipuler.
@@ -906,10 +917,10 @@ Excellent! On discerne beaucoup mieux les sous-populations de cellules... Mais l
 
 ```
 make.nice.plot <- function(data,
+                           mapping,
                            plot.title=NULL,
                            y.axis.title="y",
                            x.axis.title="x",
-                           mapping=NULL,
                            binningVect=c(0.2,0.15))
 {
   binningVector <- binningVect # Je n'ai aucune espèce d'idée comment déterminer la taille optimale du binning pour
@@ -986,8 +997,10 @@ make.nice.plot(thing,
 
 ![Graphe de SS et FS pour le premier jeu de données][FC_2]
 
+Vous voulez voir un exemple de réutilisation judicieuse de code, à l'aide de la fonction qu'on vient de définir? Vous allez être servis! On va faire un graphe de tous les channels en fonction de tous les autres channels pour un des jeux de données (il faudra bien prendre soin de transformer les channels autres que SS et FS, mais je ne le démontre pas ici et c'est trivial).
+
 ```
-# Plot all of the things
+# Plot all of the things like it's your last day on earth! Arrrr! Ou devrais-je dire RRRrrrrrr!
 ggpairs(thing, lower = list(continuous = make.nice.plot))
 
 ```

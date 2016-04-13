@@ -85,7 +85,7 @@ pt5_fclist <- c("5 AML/0033.FCS",      # OK bon oui ici on triche parce qu'on sa
 pt4_fs <- read.flowSet(pt4_fclist, dataset=2, transformation=FALSE, alter.names=TRUE)
 pt5_fs <- read.flowSet(pt5_fclist, dataset=2, transformation=FALSE, alter.names=TRUE)
 
-# Voir à quoi ressemblent les objets de type 'flowFrame' à l'intérieur des flowSets
+
 
 # Définir les channels d'intérêt
 channelList <- c("FS", "SS", "FL1", "FL2", "FL3", "FL4", "FL5")
@@ -96,36 +96,102 @@ filter_result <- filter(pt4_fs, rectangleGate("FS" = c(-Inf, largest_FS)))
 pt4_fs_trunc <- Subset(pt4_fs, filter_result)
 
 # Play with density plot to find optimal values for logicle transform
-densityplot(~`FS`, pt4_fs_trunc, xlim=c(0,1300000))
+densityplot(~`SS`, pt4_fs_trunc, xlim=c(-5000,60000))
 
 #lgcl <- estimateLogicle(pt4_fs[[2]], channels=channelList)
 lgcl_FS <- logicleTransform(w=0.6, t=1300000, m=4.5, a=0)
 lgcl_SS <- logicleTransform(w=0.5, t=500, m=3, a=0)
 tData <- transform(pt4_fs_trunc, FS=lgcl_FS(FS), SS=lgcl_SS(SS))
 
-make.nice.plot <- function(data, mapping)
+make.nice.plot <- function(data,
+                           plot.title=NULL,
+                           y.axis.title="y",
+                           x.axis.title="x",
+                           mapping=NULL,
+                           binningVect=c(0.2,0.15))
 {
-  binningVector <- c(0.2,0.15)
+  binningVector <- binningVect # Je n'ai aucune espèce d'idée comment déterminer la taille optimale du binning pour
+  # les cartes de type topographique qu'on va produire. Ma stratégie c'est d'y aller
+  # par essai et erreur... Mais c'est pas la fin du monde parce que cette mesure est
+  # assez robuste d'un jeu de données à l'autre. Je crois.
+  
   p <- ggplot(data=as.data.frame(data), mapping=mapping)
-  p <- p + geom_point(alpha=0.03, color="#051A2D")
-  p <- p + stat_density2d(aes(fill=..level..), col='white', size=0.15, geom="polygon", h=binningVector)
-  p <- p + labs(title="Patient 4 (données partielles: 1 de 8)", x="FSC (logicle)", y="SSC (logicle)")
-  p <- p + theme(plot.title = element_text(size=20, face="bold", vjust=1.5, family="Helvetica Neue"))
-  p <- p + theme(axis.title.y = element_text(size=16), axis.title.x = element_text(size=16))
-  p <- p + theme(axis.ticks.y = element_blank(), axis.ticks.x = element_blank())
-  p <- p + theme(axis.text.y = element_blank(), axis.text.x = element_blank())
+  
+  p <- p + geom_point(alpha=0.03,
+                      color="#051A2D")
+  
+  p <- p + stat_density2d(aes(fill=..level..),
+                          col='white',
+                          size=0.15,
+                          geom="polygon",
+                          h=binningVector)
+  
+  p <- p + labs(title=plot.title,
+                x=x.axis.title,
+                y=y.axis.title)
+  
+  p <- p + theme(plot.title = element_text(size=20,
+                                           face="bold",
+                                           vjust=1.5,
+                                           family="Helvetica Neue"))
+  
+  p <- p + theme(axis.title.y = element_text(size=16),
+                 axis.title.x = element_text(size=16))
+  
+  p <- p + theme(axis.ticks.y = element_blank(),
+                 axis.ticks.x = element_blank())
+  
+  p <- p + theme(axis.text.y = element_blank(),
+                 axis.text.x = element_blank())
+  
   p <- p + theme(legend.position = "none")
-  p <- p + theme(panel.background = element_rect(fill='white'), panel.grid.major = element_line(colour="#DDDDDD", size=0.5), panel.grid.minor = element_line(colour="#DDDDDD", size=0.5))
-  p <- p + theme(panel.border = element_rect(fill=NA, colour='black', size=1))
-  p <- p + scale_x_continuous(expand=c(0.05,0.05))
+  
+  p <- p + theme(panel.background = element_rect(fill='white'),
+                 panel.grid.major = element_line(colour="#DDDDDD", size=0.5),
+                 panel.grid.minor = element_line(colour="#DDDDDD", size=0.5))
+  
+  p <- p + theme(panel.border = element_rect(fill=NA,
+                                             colour='black',
+                                             size=1))
+  
+  p <- p + scale_x_continuous(expand=c(0,0))
   p <- p + scale_y_continuous(expand=c(0,0))
   p <- p + theme(aspect.ratio = 1)
+  
+  # La fonction génère au final le graphe demandé
   p
 }
 
 # Plot one thing
 thing <- exprs(tData[[1]])
-make.nice.plot(thing, aes(x=FS,y=SS))
+
+# Play with density plot to find optimal values for logicle transform
+densityplot(~`FL1`, pt4_fs_trunc, xlim=c(-7000, 130000))
+densityplot(~`FL2`, pt4_fs_trunc, xlim=c(-7000, 100000))
+densityplot(~`FL3`, pt4_fs_trunc, xlim=c(-7000, 100000))
+densityplot(~`FL4`, pt4_fs_trunc, xlim=c(-20000, 250000))
+densityplot(~`FL5`, pt4_fs_trunc, xlim=c(-1000, 60000))
+
+#lgcl <- estimateLogicle(pt4_fs[[2]], channels=channelList)
+lgcl_FL1 <- logicleTransform(w=0.79, t=130000, m=4.5, a=0)
+lgcl_FL2 <- logicleTransform(w=0.92, t=100000, m=4.5, a=0)
+lgcl_FL3 <- logicleTransform(w=0.92, t=100000, m=4.5, a=0)
+lgcl_FL4 <- logicleTransform(w=0.46, t=250000, m=4.5, a=0)
+lgcl_FL5 <- logicleTransform(w=1.17, t=60000, m=4.5, a=0)
+tData <- transform(pt4_fs_trunc, FS=lgcl_FS(FS),
+                                 SS=lgcl_SS(SS),
+                                 FL1=lgcl_FL1(FL1),
+                                 FL2=lgcl_FL2(FL2),
+                                 FL3=lgcl_FL3(FL3),
+                                 FL4=lgcl_FL4(FL4),
+                                 FL5=lgcl_FL5(FL5))
+
+# Vérifions de quoi ça a l'air!
+make.nice.plot(thing,
+               plot.title="Patient 4 (données partielles: 1 de 8)",
+               y.axis.title="SSC (logicle)",
+               x.axis.title="FSC (logicle)",
+               mapping=aes(x=FS,y=SS)) # :D
 
 # Plot all of the things
 #ggpairs(thing, lower = list(continuous = make.nice.plot))
