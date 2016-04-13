@@ -569,6 +569,8 @@ KINGS-KENT  -0.02460044 -0.109826965 0.06062608 0.7686623
 
 ## <a name="flow_cytometry">Analyse statistique de cytométrie en flux</a>
 [FC_workflow]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_workflow.png?raw=true "Workflow de cytométrie en flux"
+[FC_0.1]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_0.1.png?raw=true "Graphe des données linéaires"
+[FC_0.2]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_0.1.png?raw=true "Graphe des données transformées"
 [FC_1]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_1.png?raw=true "FS pour tous les jeux de données"
 [FC_1.1]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_1.1.png?raw=true "FS pour tous les jeux de données"
 [FC_1.2]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_1.2.png?raw=true "FS pour tous les jeux de données"
@@ -839,9 +841,14 @@ Wow ok, il y a beaucoup de données tronquées. Si c'était un problème, il fau
 largest_FS <- tail(sort(as.numeric(exprs(pt4_fs[[1]][,1])[,1])), 1)
 filter_result <- filter(pt4_fs, rectangleGate("FS" = c(-Inf, largest_FS)))
 pt4_fs_trunc <- Subset(pt4_fs, filter_result)
+
+# Vérifier le graphe
+plot(as.numeric(exprs(pt4_fs_trunc[[1]]$SS)) ~ as.numeric(exprs(pt4_fs_trunc[[1]]$FS)))
 ```
 
-Les données de cytométrie en flux doivent être transformées pour être utiles, et on sait que les transformations logarithmiques sont suboptimales dans plusieurs situations: on préfère de loin utiliser la transformation biexponentielle (aussi appellée 'logicle', ce n'est pas un typo). C'est une transformation à 4 paramètres, et il va falloir regarder nos données pour choisir des paramètres qui font du sens.
+![Graphe des données non-transformées][FC_0.1]
+
+Les données de cytométrie en flux doivent être transformées pour être utiles, et on sait que les transformations logarithmiques sont suboptimales ([doi:10.1038/ni0706-681](http://www.ncbi.nlm.nih.gov/pubmed/16785881)) dans plusieurs situations: on préfère de loin utiliser la transformation biexponentielle (aussi appellée 'logicle', ce n'est pas un typo). C'est une transformation à 4 paramètres, et il va falloir regarder nos données pour choisir des paramètres qui font du sens.
 
 ```
 # Voyons la distribution du FS et du SS
@@ -866,12 +873,28 @@ Voilà qui est plus facile à visualiser
 
 On dirait que la valeur minimale est plus petite que 0, mais en réalité c'est un artefact de lissage. C'est pas important de visualiser la distribution exacte ici, ce résultat suffit.
 
+Pour estimer les paramètres optimaux de la transformation biexponentielle,il existe certaines lignes directrices utiles ([doi:10.1002/cyto.20258](http://www.ncbi.nlm.nih.gov/pubmed/16604519)). Voici la liste des paramètres avec leur description et quelques astuces pour estimer leurs valeurs optimales:
+
+* t: "top of data scale", est estimée par la plus grande valeur du jeu de données
+* m: c'est la l'étendu des données, mais mesurée en nombre de décades asymptotiques. Souvent 4.5 donne des bons résultats pour la cytométrie en flux.
+* r: "reference point", correspond au nouveau zéro. On choisit habituellement la plus petite valeur du jeu de données.
+* w: la largeur de la zone de linéarisation, qui peut être estimée par (m - log(t/abs(r)))/2 mais qui peut nécessiter quelques ajustements.
+* a: ce paramètre est moins important mais peut être utilisé pour tasser davantage les valeurs vers les positifs après avoir choisi les autres paramètres. On peut habituellement le laisser à 0.
+
+Bref je vous épargne les essais et erreurs, mais j'en suis arrivé aux paramètres suivants à partir des graphes qu'on vient de générer. On effectue la transformation des données!
+
 ```
-#lgcl <- estimateLogicle(pt4_fs[[2]], channels=channelList)
 lgcl_FS <- logicleTransform(w=0.6, t=1300000, m=4.5, a=0)
 lgcl_SS <- logicleTransform(w=0.5, t=500, m=3, a=0)
 tData <- transform(pt4_fs_trunc, FS=lgcl_FS(FS), SS=lgcl_SS(SS))
 
+# Voyons voir à quoi ressemble le graphe résultant.
+plot(as.numeric(exprs(tData[[1]]$SS)) ~ as.numeric(exprs(tData[[1]]$FS)), ylab="SSC (linéaire)", xlab="FSC (linéaire)")
+```
+
+![Graphe des données transformées][FC_0.2]
+
+```
 make.nice.plot <- function(data, mapping)
 {
   binningVector <- c(0.2,0.15)
