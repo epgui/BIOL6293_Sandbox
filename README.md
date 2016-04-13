@@ -467,9 +467,9 @@ np
 d.weights <- vector(mode = "list", length = np)
 
 for (i in 1:np) {                     # Une boucle prenant chaque point
-  neighbours <- knear45$nn[i,]		    # Trouve les voisins pour le point i
-  distances <- d.matrix[i,neighbours]	# Calcule la distance entre i et ses voisins
-  d.weights[[i]] <- sqrt(1/distances)	# Calcule un poids entre i et chaque voisin en fonction
+  neighbours <- knear45$nn[i,]        # Trouve les voisins pour le point i
+  distances <- d.matrix[i,neighbours] # Calcule la distance entre i et ses voisins
+  d.weights[[i]] <- sqrt(1/distances) # Calcule un poids entre i et chaque voisin en fonction
                                       #    de la distance qui les séparent
 }
 
