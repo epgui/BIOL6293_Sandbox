@@ -519,7 +519,7 @@ moran.test(coord.epsg2953$Conc, listw2U(spknear45))
 >Moran I statistic		 Expectation		 Variance
 
 >      -0.03682426       -0.02222222        0.00022363
-
+Il n`y a donc pas d`autocorrelation significative entre les concentrations
 ```
 
 # Modèle pour déterminer ce qui influence la concentration en radium
