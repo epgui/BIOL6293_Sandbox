@@ -1263,3 +1263,5 @@ hist(res2[[5]], data=patient4.2, subset="FL2")
 
 ### La prochaine étape
 Après avoir réussi à réconcilier ggplot2 avec flowClust, il serait bien de passer à de vrais méthodes Bayésiennes!
+
+## Merci!
