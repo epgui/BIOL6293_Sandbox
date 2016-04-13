@@ -91,23 +91,40 @@ pt5_fs <- read.flowSet(pt5_fclist, dataset=2, transformation=FALSE, alter.names=
 channelList <- c("FS", "SS", "FL1", "FL2", "FL3", "FL4", "FL5")
 
 # Truncate extreme values of FS
-largest_FS <- tail(sort(as.numeric(exprs(pt4_fs[[1]][,1])[,1])), 1)
-filter_result <- filter(pt4_fs, rectangleGate("FS" = c(-Inf, largest_FS)))
-pt4_fs_trunc <- Subset(pt4_fs, filter_result)
+largest_FS <- tail(sort(as.numeric(exprs(pt5_fs[[1]][,1])[,1])), 1)
+filter_result <- filter(pt5_fs, rectangleGate("FS" = c(-Inf, largest_FS)))
+pt5_fs_trunc <- Subset(pt5_fs, filter_result)
 
 # Play with density plot to find optimal values for logicle transform
-densityplot(~`SS`, pt4_fs_trunc, xlim=c(-5000,60000))
+densityplot(~`SS`, pt5_fs_trunc, xlim=c(-5000,60000))
 
 #lgcl <- estimateLogicle(pt4_fs[[2]], channels=channelList)
-lgcl_FS <- logicleTransform(w=0.6, t=1300000, m=4.5, a=0)
-lgcl_SS <- logicleTransform(w=0.5, t=500, m=3, a=0)
-tData <- transform(pt4_fs_trunc, FS=lgcl_FS(FS), SS=lgcl_SS(SS))
+lgcl_FS  <- logicleTransform(w=0.60, t=1300000, m=4.5, a=0)
+lgcl_SS  <- logicleTransform(w=0.50, t=500,     m=3,   a=0)
+lgcl_FL1 <- logicleTransform(w=0.79, t=130000,  m=4.5, a=0)
+lgcl_FL2 <- logicleTransform(w=0.92, t=100000,  m=4.5, a=0)
+lgcl_FL3 <- logicleTransform(w=0.92, t=100000,  m=4.5, a=0)
+lgcl_FL4 <- logicleTransform(w=0.46, t=250000,  m=4.5, a=0)
+lgcl_FL5 <- logicleTransform(w=1.17, t=60000,   m=4.5, a=0)
+tData <- transform(pt5_fs_trunc, FS =lgcl_FS(FS),
+                                 SS =lgcl_SS(SS),
+                                 FL1=lgcl_FL1(FL1),
+                                 FL2=lgcl_FL2(FL2),
+                                 FL3=lgcl_FL3(FL3),
+                                 FL4=lgcl_FL4(FL4),
+                                 FL5=lgcl_FL5(FL5))
+
+# tData n'est pas un dataFrame standard de R... c'est un objet de type 'flowFrame' défini
+# par la librairie flowCore. On va le convertir en dataframe standard plus simple à manipuler.
+thing <- exprs(tData[[1]])
+
+
 
 make.nice.plot <- function(data,
+                           mapping,
                            plot.title=NULL,
                            y.axis.title="y",
                            x.axis.title="x",
-                           mapping=NULL,
                            binningVect=c(0.2,0.15))
 {
   binningVector <- binningVect # Je n'ai aucune espèce d'idée comment déterminer la taille optimale du binning pour
@@ -191,10 +208,10 @@ make.nice.plot(thing,
                plot.title="Patient 4 (données partielles: 1 de 8)",
                y.axis.title="SSC (logicle)",
                x.axis.title="FSC (logicle)",
-               mapping=aes(x=FS,y=SS)) # :D
+               mapping=aes(x=FS, y=SS)) # :D
 
 # Plot all of the things
-#ggpairs(thing, lower = list(continuous = make.nice.plot))
+ggpairs(thing, lower = list(continuous = make.nice.plot))
 
 
 

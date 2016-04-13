@@ -567,6 +567,17 @@ KINGS-KENT  -0.02460044 -0.109826965 0.06062608 0.7686623
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 ## <a name="flow_cytometry">Analyse statistique de cytométrie en flux</a>
 [FC_workflow]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_workflow.png?raw=true "Workflow de cytométrie en flux"
 [FC_0.1]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_0.1.png?raw=true "Graphe des données linéaires"
@@ -576,11 +587,17 @@ KINGS-KENT  -0.02460044 -0.109826965 0.06062608 0.7686623
 [FC_1.2]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_1.2.png?raw=true "FS pour tous les jeux de données"
 [FC_2]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_2.png?raw=true "Graphe de SS et FS pour le premier jeu de données"
 [FC_3]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_3.png?raw=true "Plot all of the things like it's your last day on earth"
+[FC_3.1]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_3.1.png?raw=true "Plot all of the things like it's your last day on earth"
 
 ### Qu'est-ce que la cytométrie en flux?
 C'est une technique excessivement populaire en biochimie et en biologie médicale, mais peut-être moins dans certaines branches de la biologie ou de l'écologie. Le principe est illustré ci-dessous:
 
 ![Workflow de cytométrie en flux][FC_workflow]
+
+
+
+
+
 
 ### Visualisation des données
 L'instrument produit un fichier [de format standard .FCS](https://en.wikipedia.org/wiki/Flow_Cytometry_Standard) gigantesque qui contient l'information d'intensité lumineuse capté par les détecteurs [SSC, FSC](http://ricfacility.byu.edu/Research/CellSizeGranularity.aspx), et un certain nombre de détecteurs à fluorescence (par exemple FL1, FL2, FL3, FL4, FL5, FL6, FL7, ...) selon les marqueurs fluorescents et l'appareil utilisé, pour chaque 'événement' ou pour chaque cellule qui passe à travers le laser. Le premier problème, c'est de visualiser toutes ces données pour avoir une impression initiale de quoi il s'agit.
@@ -649,6 +666,14 @@ Consultez la documentation officielle pour les autres librairies de base pour la
 * [flowViz](http://bioconductor.org/packages/release/bioc/html/flowViz.html) (permet la visualisation des données de flowCore)
 * [flowClust](http://bioconductor.org/packages/release/bioc/html/flowClust.html) (permet le clustering des données de flowCore)
 * [openCyto](http://bioconductor.org/packages/release/bioc/html/openCyto.html) (framework d'analyses automatisées, qui fonctionne avec toutes les autres librairies)
+
+
+
+
+
+
+
+
 
 #### Visualisation
 
@@ -1006,3 +1031,19 @@ ggpairs(thing, lower = list(continuous = make.nice.plot))
 ```
 
 ![Plot all of the things like it's your last day on earth][FC_3]
+
+On peut rapidement comparer avec un jeu de données d'un patient atteint de AML:
+
+![Plot all of the things like it's your last day on earth][FC_3.1]
+
+Cool, on a développé notre propre petite méthode graphique pour visualiser les données de cytométrie en flux! Maintenant amusons-nous avec des statistiques Bayésiennes et du machine-learning.
+
+
+
+
+
+
+
+
+
+### Identification automatisée des populations par clustering
