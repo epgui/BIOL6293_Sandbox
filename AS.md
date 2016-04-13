@@ -19,7 +19,7 @@ Avant d'utiliser les librairies rgdal et rgeos dans R, on doit installer les log
 [SA_11]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-11.png?raw=true "Histogramme des résidus de l'anova après transformation"
 [SA_12]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-12.PNG?raw=true "Analyse des résidus après anova après transformation"
 [SA_13]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-13.PNG?raw=true "ANOVA représentée graphiquement"
-[SA_18]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-18.PNG?raw=true "Representation des donnees"
+[SA_18]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-18.png?raw=true "Representation des donnees"
 
 ```
 
