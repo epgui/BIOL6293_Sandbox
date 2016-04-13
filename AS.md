@@ -738,6 +738,7 @@ KINGS-HILLS  0.04869198 -0.048551702 0.14593565 0.4566905
 KINGS-KENT  -0.02460044 -0.109826965 0.06062608 0.7686623
 
 ```
+```
 Filtrés vs Non-Filtrés
  
 filtre <- read.table("Filtre.txt", sep = "\t", header = TRUE)
