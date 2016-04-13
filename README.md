@@ -759,7 +759,7 @@ KINGS-KENT  -0.02460044 -0.109826965 0.06062608 0.7686623
 
 
 
-## <a name="flow_cytometry">Analyse statistique de cytométrie en flux</a>
+## <a name="flow_cytometry">Analyse des données de cytométrie en flux</a>
 [FC_workflow]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_workflow.png?raw=true "Workflow de cytométrie en flux"
 [FC_0.1]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_0.1.png?raw=true "Graphe des données linéaires"
 [FC_0.2]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_0.2.png?raw=true "Graphe des données transformées"
