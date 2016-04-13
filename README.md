@@ -890,40 +890,90 @@ lgcl_FS <- logicleTransform(w=0.6, t=1300000, m=4.5, a=0)
 lgcl_SS <- logicleTransform(w=0.5, t=500, m=3, a=0)
 tData <- transform(pt4_fs_trunc, FS=lgcl_FS(FS), SS=lgcl_SS(SS))
 
+# tData n'est pas un dataFrame standard de R... c'est un objet de type 'flowFrame' défini
+# par la librairie flowCore. On va le convertir en dataframe standard plus simple à manipuler.
+thing <- exprs(tData[[1]])
+
 # Voyons voir à quoi ressemble le graphe résultant.
-plot(as.numeric(exprs(tData[[1]]$SS)) ~ as.numeric(exprs(tData[[1]]$FS)),
+plot(thing[,'SS'] ~ thing[,'FS'],
      ylab="SSC (logicle)",
      xlab="FSC (logicle)")
 ```
 
 ![Graphe des données transformées][FC_0.2]
 
+Excellent! On discerne beaucoup mieux les sous-populations de cellules... Mais le graphe est abominable. Le design est très important quand on publie des graphes, parce que ceux-ci racontent une histoire et on veut aider le plus possible le lecteur à suivre l'histoire en présentant judicieusement nos infos. Le design çe n'est pas qu'une considération cosmétique... Et en fait un bon design est davantage fonctionnel que cosmétique. Puisqu'on va refaire des graphes souvent, il convient de définir une fonction qu'on pourra réutiliser comme bon nous semble.
+
 ```
-make.nice.plot <- function(data, mapping)
+make.nice.plot <- function(data,
+                           plot.title=NULL,
+                           y.axis.title="y",
+                           x.axis.title="x",
+                           mapping=NULL,
+                           binningVect=c(0.2,0.15))
 {
-  binningVector <- c(0.2,0.15)
+  binningVector <- binningVect # Je n'ai aucune espèce d'idée comment déterminer la taille optimale du binning pour
+                               # les cartes de type topographique qu'on va produire. Ma stratégie c'est d'y aller
+                               # par essai et erreur... Mais c'est pas la fin du monde parce que cette mesure est
+                               # assez robuste d'un jeu de données à l'autre. Je crois.
+
   p <- ggplot(data=as.data.frame(data), mapping=mapping)
-  p <- p + geom_point(alpha=0.03, color="#051A2D")
-  p <- p + stat_density2d(aes(fill=..level..), col='white', size=0.15, geom="polygon", h=binningVector)
-  p <- p + labs(title="Patient 4 (données partielles: 1 de 8)", x="FSC (logicle)", y="SSC (logicle)")
-  p <- p + theme(plot.title = element_text(size=20, face="bold", vjust=1.5, family="Helvetica Neue"))
-  p <- p + theme(axis.title.y = element_text(size=16), axis.title.x = element_text(size=16))
-  p <- p + theme(axis.ticks.y = element_blank(), axis.ticks.x = element_blank())
-  p <- p + theme(axis.text.y = element_blank(), axis.text.x = element_blank())
+
+  p <- p + geom_point(alpha=0.03,
+                      color="#051A2D")
+
+  p <- p + stat_density2d(aes(fill=..level..),
+                          col='white',
+                          size=0.15,
+                          geom="polygon",
+                          h=binningVector)
+
+  p <- p + labs(title=plot.title,
+                x=x.axis.title,
+                y=y.axis.title)
+
+  p <- p + theme(plot.title = element_text(size=20,
+                                           face="bold",
+                                           vjust=1.5,
+                                           family="Helvetica Neue"))
+
+  p <- p + theme(axis.title.y = element_text(size=16),
+                 axis.title.x = element_text(size=16))
+
+  p <- p + theme(axis.ticks.y = element_blank(),
+                 axis.ticks.x = element_blank())
+
+  p <- p + theme(axis.text.y = element_blank(),
+                 axis.text.x = element_blank())
+
   p <- p + theme(legend.position = "none")
+
   p <- p + theme(panel.background = element_rect(fill='white'),
                  panel.grid.major = element_line(colour="#DDDDDD", size=0.5),
                  panel.grid.minor = element_line(colour="#DDDDDD", size=0.5))
-  p <- p + theme(panel.border = element_rect(fill=NA, colour='black', size=1))
+
+  p <- p + theme(panel.border = element_rect(fill=NA,
+                                             colour='black',
+                                             size=1))
+
   p <- p + scale_x_continuous(expand=c(0,0))
   p <- p + scale_y_continuous(expand=c(0,0))
   p <- p + theme(aspect.ratio = 1)
+
+  # La fonction génère au final le graphe demandé
   p
 }
+```
 
-# Plot one thing
-thing <- exprs(tData[[1]])
-make.nice.plot(thing, aes(x=FS,y=SS))
+En programmation, les fonctions sont importantes: elles permettent la réutilisation judicieuse de code. Une fois définie, une fonction bien pensée est très simple d'utilisation et très versatile. Voyons comment il est simple de l'utiliser.
+
+```
+# Vérifions de quoi ça a l'air! :D
+make.nice.plot(thing,
+               plot.title="Patient 4 (données partielles: 1 de 8)",
+               y.axis.title="SSC (logicle)",
+               x.axis.title="FSC (logicle)",
+               mapping=aes(x=FS,y=SS))
 ```
 
 ![Graphe de SS et FS pour le premier jeu de données][FC_2]
