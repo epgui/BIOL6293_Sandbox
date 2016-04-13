@@ -157,6 +157,8 @@ map.scale(2640000,7565000,10000,"km",5,subdiv=2,tcol='black',scol='black',sfcol=
 legend(2550000, 7565000, legend=c("<0.05","0.05 à 0.1", "0.1 à 0.15", "0.15 à 0.2","0.2 à 0.25", "0.25 à 0,30", ">0.30"), pch=21, pt.bg=palette2, cex=0.6, title="Concentration Ra (pg/L)")
 pointLabel(coord.epsg2953@coords, labels = coordonnees$ID, cex = 0.7, allowSmallOverlap = FALSE, col ="darkolivegreen")
 
+#Part II : Analyse
+
 #Analyse spatiale recherche du voisin
 library(spdep)
 knn1 <- knearneigh(coord.epsg2953, k = 1, longlat = FALSE, RANN = FALSE)$nn
@@ -252,13 +254,50 @@ plot(lm(sqrtlogConc ~ concentrations$Comtes), which = 1:4)
 
 #Représentation graphique anova
 layout(matrix(1))
-plot(concentrations$Comtes, sqrtlogConc, xlab = "comtés", ylab = "sqrt(log10(Conc+1))", col = c("brown1", "lightblue", "darkgoldenrod1"), axes =TRUE, main="Comparaision ANOVA concentration en radium par comté")
+plot(concentrations$Comtes, sqrtlogConc, xlab = "comtés", ylab = "sqrt(log10(Conc+1))", col = c("brown1", "lightblue", "darkgoldenrod1"), axes =TRUE, main="Comparaison ANOVA concentration en radium par comté")
 
 #Comparaisons planifié KENT et HILLS et KINGS et HILLS
 contrasts(concentrations$Comtes) <- cbind(c(-1,1,0), c(1,0,-1))
 contrasts(concentrations$Comtes)
 summary.lm(anova4)
 
-#Comparasion non-planifié
+#Comparaison non-planifié
 anova(anova4)
 TukeyHSD(anova4)
+
+#Filtrés vs Non-Filtrés
+
+filtre <- read.table("Filtre.txt", sep = "\t", header = TRUE)
+filtre
+
+plot(filtre$Filtre, filtre$nFiltre, axes = FALSE, main = "Échantillons filtrés vs non-filtrés, spéciation du radium", xlab = "Filtrés", ylab = "Non-Filtrés")
+axis(1, pos = 0)
+axis(2, pos = 0)
+
+filtrelm <- lm(nFiltre ~ Filtre, data = filtre)
+summary(filtrelm)
+abline(filtrelm$coefficients, col = "red")
+
+hist(filtre$Filtre)
+hist(filtre$nFiltre)
+shapiro.test(filtre$Filtre)
+shapiro.test(filtre$nFiltre)
+
+logfiltre <- sqrt(log10(filtre$Filtre +1))
+lognfiltre <- sqrt(log10(filtre$nFiltre +1))
+
+hist(logfiltre)
+hist(lognfiltre)
+shapiro.test(logfiltre)
+shapiro.test(lognfiltre)
+
+plot(logfiltre, lognfiltre, axes = TRUE, main = "Échantillons filtrés vs non-filtrés, spéciation du radium", xlab = "tFiltrés", ylab = "tNon-Filtrés")
+tfiltrelm <- lm(logfiltre ~ lognfiltre)
+summary(tfiltrelm)
+abline(tfiltrelm$coefficients, col = "blue")
+hist(tfiltrelm$residuals)
+shapiro.test(tfiltrelm$residuals)
+
+var.test(logfiltre, lognfiltre)
+
+t.test(logfiltre, lognfiltre, var.equal = TRUE)

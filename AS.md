@@ -19,6 +19,7 @@ Avant d'utiliser les librairies rgdal et rgeos dans R, on doit installer les log
 [SA_11]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-11.png?raw=true "Histogramme des résidus de l'anova après transformation"
 [SA_12]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-12.PNG?raw=true "Analyse des résidus après anova après transformation"
 [SA_13]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-13.PNG?raw=true "ANOVA représentée graphiquement"
+[SA_18]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-18.PNG?raw=true "Representation des donnees"
 
 ```
 
@@ -737,5 +738,165 @@ KINGS-HILLS  0.04869198 -0.048551702 0.14593565 0.4566905
 KINGS-KENT  -0.02460044 -0.109826965 0.06062608 0.7686623
 
 ```
+
+> #Filtrés vs Non-Filtrés
+> 
+> filtre <- read.table("Filtre.txt", sep = "\t", header = TRUE)
+> filtre
+   Filtre nFiltre
+1   0.060   0.022
+2   0.225   0.195
+3   0.046   0.050
+4   0.344   0.304
+5   0.029   0.000
+6   0.048   0.046
+7   0.121   0.108
+8   0.027   0.056
+9   0.079   0.019
+10  0.033   0.015
+11  0.033   0.028
+12  0.079   0.091
+13  0.011   0.000
+14  0.031   0.030
+15  0.078   0.062
+16  0.212   0.201
+17  0.075   0.055
+18  0.124   0.082
+19  0.089   0.061
+20  0.095   0.072
+21  0.143   0.115
+22  0.035   0.018
+23  0.037   0.023
+> 
+> plot(filtre$Filtre, filtre$nFiltre, axes = FALSE, main = "Échantillons filtrés vs non-filtrés, spéciation du radium", xlab = "Filtrés", ylab = "Non-Filtrés")
+> axis(1, pos = 0)
+> axis(2, pos = 0)
+
+```
+
+![Representation des donnees][SA_18]
+
+``` 
+
+> filtrelm <- lm(nFiltre ~ Filtre, data = filtre)
+> summary(filtrelm)
+
+Call:
+lm(formula = nFiltre ~ Filtre, data = filtre)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.043562 -0.005691 -0.001142  0.009147  0.040406 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -0.008793   0.005763  -1.526    0.142    
+Filtre       0.903237   0.048788  18.514 1.75e-14 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.01809 on 21 degrees of freedom
+Multiple R-squared:  0.9423,	Adjusted R-squared:  0.9395 
+F-statistic: 342.8 on 1 and 21 DF,  p-value: 1.747e-14
+
+> abline(filtrelm$coefficients, col = "red")
+> 
+> hist(filtre$Filtre)
+> hist(filtre$nFiltre)
+> shapiro.test(filtre$Filtre)
+
+	Shapiro-Wilk normality test
+
+data:  filtre$Filtre
+W = 0.7894, p-value = 0.0002605
+
+> shapiro.test(filtre$nFiltre)
+
+	Shapiro-Wilk normality test
+
+data:  filtre$nFiltre
+W = 0.79776, p-value = 0.0003529
+
+> 
+> logfiltre <- sqrt(log10(filtre$Filtre +1))
+> lognfiltre <- sqrt(log10(filtre$nFiltre +1))
+> 
+> hist(logfiltre)
+> hist(lognfiltre)
+> shapiro.test(logfiltre)
+
+	Shapiro-Wilk normality test
+
+data:  logfiltre
+W = 0.92817, p-value = 0.09984
+
+> shapiro.test(lognfiltre)
+
+	Shapiro-Wilk normality test
+
+data:  lognfiltre
+W = 0.96527, p-value = 0.5774
+
+> 
+> plot(logfiltre, lognfiltre, axes = TRUE, main = "Échantillons filtrés vs non-filtrés, spéciation du radium", xlab = "tFiltrés", ylab = "tNon-Filtrés")
+> tfiltrelm <- lm(logfiltre ~ lognfiltre)
+> summary(tfiltrelm)
+
+Call:
+lm(formula = logfiltre ~ lognfiltre)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.071829 -0.018372 -0.001118  0.015826  0.052662 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  0.05876    0.01307   4.496 0.000199 ***
+lognfiltre   0.78419    0.07645  10.257 1.24e-09 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.02939 on 21 degrees of freedom
+Multiple R-squared:  0.8336,	Adjusted R-squared:  0.8257 
+F-statistic: 105.2 on 1 and 21 DF,  p-value: 1.24e-09
+
+> abline(tfiltrelm$coefficients, col = "blue")
+> hist(tfiltrelm$residuals)
+> shapiro.test(tfiltrelm$residuals)
+
+	Shapiro-Wilk normality test
+
+data:  tfiltrelm$residuals
+W = 0.96859, p-value = 0.6553
+
+
+> var.test(logfiltre, lognfiltre)
+
+	F test to compare two variances
+
+data:  logfiltre and lognfiltre
+F = 0.7377, num df = 22, denom df = 22, p-value = 0.4814
+alternative hypothesis: true ratio of variances is not equal to 1
+95 percent confidence interval:
+ 0.3128665 1.7394140
+sample estimates:
+ratio of variances 
+         0.7377021 
+
+> t.test(logfiltre, lognfiltre, var.equal = TRUE)
+
+	Two Sample t-test
+
+data:  logfiltre and lognfiltre
+t = 1.1619, df = 44, p-value = 0.2515
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -0.01922519  0.07157002
+sample estimates:
+mean of x mean of y 
+0.1771864 0.1510140 
+
+```
+
 
 [< Retour à l'index](https://github.com/epgui/BIOL6293_Sandbox/) | [Cytométrie en flux >](https://github.com/epgui/BIOL6293_Sandbox/blob/master/CF.md)
