@@ -570,6 +570,8 @@ KINGS-KENT  -0.02460044 -0.109826965 0.06062608 0.7686623
 ## <a name="flow_cytometry">Analyse statistique de cytométrie en flux</a>
 [FC_workflow]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_workflow.png?raw=true "Workflow de cytométrie en flux"
 [FC_1]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_1.png?raw=true "FS pour tous les jeux de données"
+[FC_1.1]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_1.1.png?raw=true "FS pour tous les jeux de données"
+[FC_1.2]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_1.2.png?raw=true "FS pour tous les jeux de données"
 [FC_2]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_2.png?raw=true "Graphe de SS et FS pour le premier jeu de données"
 [FC_3]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_3.png?raw=true "Plot all of the things like it's your last day on earth"
 
@@ -860,7 +862,7 @@ densityplot(~`SS`, pt4_fs_trunc, xlim=c(-5000,60000))
 ```
 
 Voilà qui est plus facile à visualiser
-![FS pour tous les jeux de données][FC_1.1]
+![FS pour tous les jeux de données][FC_1.2]
 
 On dirait que la valeur minimale est plus petite que 0, mais en réalité c'est un artefact de lissage. C'est pas important de visualiser la distribution exacte ici, ce résultat suffit.
 
