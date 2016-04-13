@@ -965,7 +965,9 @@ make.nice.plot <- function(data,
 }
 ```
 
-En programmation, les fonctions sont importantes: elles permettent la réutilisation judicieuse de code. Une fois définie, une fonction bien pensée est très simple d'utilisation et très versatile. Voyons comment il est simple de l'utiliser.
+En programmation, les fonctions sont importantes: elles permettent la réutilisation judicieuse de code. Une fois définie, une fonction bien pensée est très simple d'utilisation et très versatile. Un autre avantage d'utiliser des fonctions pour réutiliser du code, c'est que si jamais on veut y apporter des changements, on peut faire des modifications une seule fois et ça va se réfléter sur chaque appel à la fonction!
+
+Voyons comment il est simple de l'utiliser.
 
 ```
 # Vérifions de quoi ça a l'air! :D
