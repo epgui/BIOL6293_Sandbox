@@ -738,11 +738,10 @@ KINGS-HILLS  0.04869198 -0.048551702 0.14593565 0.4566905
 KINGS-KENT  -0.02460044 -0.109826965 0.06062608 0.7686623
 
 ```
-
-> #Filtrés vs Non-Filtrés
-> 
-> filtre <- read.table("Filtre.txt", sep = "\t", header = TRUE)
-> filtre
+Filtrés vs Non-Filtrés
+ 
+filtre <- read.table("Filtre.txt", sep = "\t", header = TRUE)
+filtre
    Filtre nFiltre
 1   0.060   0.022
 2   0.225   0.195
@@ -767,19 +766,18 @@ KINGS-KENT  -0.02460044 -0.109826965 0.06062608 0.7686623
 21  0.143   0.115
 22  0.035   0.018
 23  0.037   0.023
-> 
-> plot(filtre$Filtre, filtre$nFiltre, axes = FALSE, main = "Échantillons filtrés vs non-filtrés, spéciation du radium", xlab = "Filtrés", ylab = "Non-Filtrés")
-> axis(1, pos = 0)
-> axis(2, pos = 0)
-
+ 
+ plot(filtre$Filtre, filtre$nFiltre, axes = FALSE, main = "Échantillons filtrés vs non-filtrés, spéciation du radium", xlab = "Filtrés", ylab = "Non-Filtrés")
+ axis(1, pos = 0)
+ axis(2, pos = 0)
 ```
 
 ![Representation des donnees][SA_18]
 
-``` 
 
-> filtrelm <- lm(nFiltre ~ Filtre, data = filtre)
-> summary(filtrelm)
+``` 
+ filtrelm <- lm(nFiltre ~ Filtre, data = filtre)
+ summary(filtrelm)
 
 Call:
 lm(formula = nFiltre ~ Filtre, data = filtre)
@@ -789,7 +787,7 @@ Residuals:
 -0.043562 -0.005691 -0.001142  0.009147  0.040406 
 
 Coefficients:
-             Estimate Std. Error t value Pr(>|t|)    
+             Estimate Std. Error t value Pr(|t|)    
 (Intercept) -0.008793   0.005763  -1.526    0.142    
 Filtre       0.903237   0.048788  18.514 1.75e-14 ***
 ---
@@ -799,48 +797,48 @@ Residual standard error: 0.01809 on 21 degrees of freedom
 Multiple R-squared:  0.9423,	Adjusted R-squared:  0.9395 
 F-statistic: 342.8 on 1 and 21 DF,  p-value: 1.747e-14
 
-> abline(filtrelm$coefficients, col = "red")
-> 
-> hist(filtre$Filtre)
-> hist(filtre$nFiltre)
-> shapiro.test(filtre$Filtre)
+ abline(filtrelm$coefficients, col = "red")
+ 
+ hist(filtre$Filtre)
+ hist(filtre$nFiltre)
+ shapiro.test(filtre$Filtre)
 
 	Shapiro-Wilk normality test
 
 data:  filtre$Filtre
 W = 0.7894, p-value = 0.0002605
 
-> shapiro.test(filtre$nFiltre)
+ shapiro.test(filtre$nFiltre)
 
 	Shapiro-Wilk normality test
 
 data:  filtre$nFiltre
 W = 0.79776, p-value = 0.0003529
 
-> 
-> logfiltre <- sqrt(log10(filtre$Filtre +1))
-> lognfiltre <- sqrt(log10(filtre$nFiltre +1))
-> 
-> hist(logfiltre)
-> hist(lognfiltre)
-> shapiro.test(logfiltre)
+ 
+ logfiltre <- sqrt(log10(filtre$Filtre +1))
+ lognfiltre <- sqrt(log10(filtre$nFiltre +1))
+ 
+ hist(logfiltre)
+ hist(lognfiltre)
+ shapiro.test(logfiltre)
 
 	Shapiro-Wilk normality test
 
 data:  logfiltre
 W = 0.92817, p-value = 0.09984
 
-> shapiro.test(lognfiltre)
+ shapiro.test(lognfiltre)
 
 	Shapiro-Wilk normality test
 
 data:  lognfiltre
 W = 0.96527, p-value = 0.5774
 
-> 
-> plot(logfiltre, lognfiltre, axes = TRUE, main = "Échantillons filtrés vs non-filtrés, spéciation du radium", xlab = "tFiltrés", ylab = "tNon-Filtrés")
-> tfiltrelm <- lm(logfiltre ~ lognfiltre)
-> summary(tfiltrelm)
+ 
+ plot(logfiltre, lognfiltre, axes = TRUE, main = "Échantillons filtrés vs non-filtrés, spéciation du radium", xlab = "tFiltrés", ylab = "tNon-Filtrés")
+ tfiltrelm <- lm(logfiltre ~ lognfiltre)
+ summary(tfiltrelm)
 
 Call:
 lm(formula = logfiltre ~ lognfiltre)
@@ -850,7 +848,7 @@ Residuals:
 -0.071829 -0.018372 -0.001118  0.015826  0.052662 
 
 Coefficients:
-            Estimate Std. Error t value Pr(>|t|)    
+            Estimate Std. Error t value Pr(|t|)    
 (Intercept)  0.05876    0.01307   4.496 0.000199 ***
 lognfiltre   0.78419    0.07645  10.257 1.24e-09 ***
 ---
@@ -860,9 +858,9 @@ Residual standard error: 0.02939 on 21 degrees of freedom
 Multiple R-squared:  0.8336,	Adjusted R-squared:  0.8257 
 F-statistic: 105.2 on 1 and 21 DF,  p-value: 1.24e-09
 
-> abline(tfiltrelm$coefficients, col = "blue")
-> hist(tfiltrelm$residuals)
-> shapiro.test(tfiltrelm$residuals)
+ abline(tfiltrelm$coefficients, col = "blue")
+ hist(tfiltrelm$residuals)
+ shapiro.test(tfiltrelm$residuals)
 
 	Shapiro-Wilk normality test
 
@@ -870,7 +868,7 @@ data:  tfiltrelm$residuals
 W = 0.96859, p-value = 0.6553
 
 
-> var.test(logfiltre, lognfiltre)
+ var.test(logfiltre, lognfiltre)
 
 	F test to compare two variances
 
@@ -883,7 +881,7 @@ sample estimates:
 ratio of variances 
          0.7377021 
 
-> t.test(logfiltre, lognfiltre, var.equal = TRUE)
+ t.test(logfiltre, lognfiltre, var.equal = TRUE)
 
 	Two Sample t-test
 
@@ -895,7 +893,6 @@ alternative hypothesis: true difference in means is not equal to 0
 sample estimates:
 mean of x mean of y 
 0.1771864 0.1510140 
-
 ```
 
 
