@@ -88,7 +88,7 @@ pt5_fs <- read.flowSet(pt5_fclist, dataset=2, transformation=FALSE, alter.names=
 
 channelList <- c("FS", "SS", "FL1", "FL2", "FL3", "FL4", "FL5")
 
-# Truncate extreme values
+# Truncate extreme values of FS
 largest_FS <- tail(sort(as.numeric(exprs(pt4_fs[[1]][,1])[,1])), 1)
 filter_result <- filter(pt4_fs, rectangleGate("FS" = c(-Inf, largest_FS)))
 pt4_fs_trunc <- Subset(pt4_fs, filter_result)
@@ -115,7 +115,7 @@ make.nice.plot <- function(data, mapping)
   p <- p + theme(legend.position = "none")
   p <- p + theme(panel.background = element_rect(fill='white'), panel.grid.major = element_line(colour="#DDDDDD", size=0.5), panel.grid.minor = element_line(colour="#DDDDDD", size=0.5))
   p <- p + theme(panel.border = element_rect(fill=NA, colour='black', size=1))
-  p <- p + scale_x_continuous(expand=c(0,0))
+  p <- p + scale_x_continuous(expand=c(0.05,0.05))
   p <- p + scale_y_continuous(expand=c(0,0))
   p <- p + theme(aspect.ratio = 1)
   p
@@ -126,7 +126,7 @@ thing <- exprs(tData[[1]])
 make.nice.plot(thing, aes(x=FS,y=SS))
 
 # Plot all of the things
-ggpairs(thing, lower = list(continuous = make.nice.plot))
+#ggpairs(thing, lower = list(continuous = make.nice.plot))
 
 
 

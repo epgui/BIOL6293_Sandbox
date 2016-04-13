@@ -293,7 +293,9 @@ make.nice.plot <- function(data, mapping)
   p <- p + theme(axis.ticks.y = element_blank(), axis.ticks.x = element_blank())
   p <- p + theme(axis.text.y = element_blank(), axis.text.x = element_blank())
   p <- p + theme(legend.position = "none")
-  p <- p + theme(panel.background = element_rect(fill='white'), panel.grid.major = element_line(colour="#DDDDDD", size=0.5), panel.grid.minor = element_line(colour="#DDDDDD", size=0.5))
+  p <- p + theme(panel.background = element_rect(fill='white'),
+                 panel.grid.major = element_line(colour="#DDDDDD", size=0.5),
+                 panel.grid.minor = element_line(colour="#DDDDDD", size=0.5))
   p <- p + theme(panel.border = element_rect(fill=NA, colour='black', size=1))
   p <- p + scale_x_continuous(expand=c(0,0))
   p <- p + scale_y_continuous(expand=c(0,0))
