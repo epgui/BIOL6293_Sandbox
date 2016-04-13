@@ -671,7 +671,7 @@ alternative hypothesis: data have a skewness
 
 ```
 
-# Représentation graphique anova
+Représentation graphique anova
 layout(matrix(1))
 plot(concentrations$Comtes,
      sqrtlogConc,
@@ -686,7 +686,7 @@ plot(concentrations$Comtes,
 ![Representation graphique de l'anova][SA_13]
 
 ```
-# Comparaisons planifié KENT et HILLS et KINGS et HILLS
+Comparaisons planifié KENT et HILLS et KINGS et HILLS
  contrasts(concentrations$Comtes) <- cbind(c(-1,1,0), c(1,0,-1))
  contrasts(concentrations$Comtes)
       [,1] [,2]
@@ -736,8 +736,8 @@ $`concentrations$Comtes`
 KENT-HILLS   0.07329242  0.009171837 0.13741300 0.0212582
 KINGS-HILLS  0.04869198 -0.048551702 0.14593565 0.4566905
 KINGS-KENT  -0.02460044 -0.109826965 0.06062608 0.7686623
-
 ```
+
 ```
 Filtrés vs Non-Filtrés
  
