@@ -581,7 +581,7 @@ C'est une technique excessivement populaire en biochimie et en biologie médical
 ### Visualisation des données
 L'instrument produit un fichier [de format standard .FCS](https://en.wikipedia.org/wiki/Flow_Cytometry_Standard) gigantesque qui contient l'information d'intensité lumineuse capté par les détecteurs [SSC, FSC](http://ricfacility.byu.edu/Research/CellSizeGranularity.aspx), et un certain nombre de détecteurs à fluorescence (par exemple FL1, FL2, FL3, FL4, FL5, FL6, FL7, ...) selon les marqueurs fluorescents et l'appareil utilisé, pour chaque 'événement' ou pour chaque cellule qui passe à travers le laser. Le premier problème, c'est de visualiser toutes ces données pour avoir une impression initiale de quoi il s'agit.
 
-### Préparation de l'environnement R
+#### Préparation de l'environnement R
 La cytométrie en flux est une technique excessivement populaire. Initialement, la seule manière d'analyser les données c'était d'avoir recours aux logiciels commerciaux qui viennent avec l'appareil ou qu'on peut acheter de commerçants indépendants. Tous les appareils ont leurs propres logiciels, et il existe une grande variété de logiciels disponibles. Le problème c'est que les méthodes d'analyse de ces logiciels ne sont pas open source, et c'est donc très suboptimal en termes de reproductibilité.
 
 De plus en plus de solutions sont développées pour permettre l'analyse de données complexes de cytométrie en flux avec R. Voici un guide d'installation pour les librairies de base.
@@ -606,11 +606,11 @@ options qui vous sont présentées:
 Vous pouvez maintenant accéder aux librairies de Bioconductor (sauf flowQ qui ne marchera pas encore)
 à partir de R ou de RStudio!
 
-### Installation de flowStats
+#### Installation de flowStats
 flowStats peut vous donner de la misère avec rgl (un dependency) si votre version de X11 n'est pas à jour.
 Vous pouvez télécharger la dernière vesion de X11 pour Mac ici: http://www.xquartz.org/
 
-### Installation de flowQ
+#### Installation de flowQ
 Attention! flowQ dépend de ImageMagick, que vous pouvez installer à partir des binaries suivants:
 * Mac: http://www.imagemagick.org/script/binary-releases.php#macosx
 * Win: http://www.imagemagick.org/script/binary-releases.php#windows
@@ -634,7 +634,7 @@ une erreur, ImageMagick n'est pas bien installé.
 
 Sur Windows, bonne chance!
 
-### Analyse
+#### Visualisation
 
 ```
 library(flowCore)  # Bioconductor
