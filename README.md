@@ -592,6 +592,10 @@ KINGS-KENT  -0.02460044 -0.109826965 0.06062608 0.7686623
 [FC_4]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_4.png?raw=true "BIC of 10 clusters"
 [FC_4.1]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_4.1.png?raw=true "Résultats du clustering"
 [FC_4.2]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_4.2.png?raw=true "Résultats du clustering avec 5 clusters"
+[FC_4.3]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_4.3.png?raw=true "Density map"
+[FC_4.4]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_4.4.png?raw=true "Heatmap"
+[FC_4.5]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_4.5.png?raw=true "FL1 density VS clusters"
+[FC_4.6]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_4.6.png?raw=true "FL2 density VS clusters"
 
 ### Qu'est-ce que la cytométrie en flux?
 C'est une technique excessivement populaire en biochimie et en biologie médicale, mais peut-être moins dans certaines branches de la biologie ou de l'écologie. Le principe est illustré ci-dessous:
@@ -1227,4 +1231,35 @@ plot(res2[[5]], data=patient4.2, level=0.8, z.cutoff=0)
 
 ![Résultats du clustering avec 5 clusters][FC_4.2]
 
-Ça parait pas mal plus raisonnable à vue d'oeil!
+Ça parait pas mal plus raisonnable à vue d'oeil! On peut s'amuser à visualiser autrement, comme par exemple avec des cartes topo:
+
+```
+res2.den <- density(res2[[5]], data=patient4.2)
+plot(res2.den)
+```
+
+![Density map][FC_4.3]
+
+Ou encore des heatmaps:
+
+```
+plot(res2.den, type="image")
+```
+![Heatmap][FC_4.4]
+
+On peut examiner la densité des clusters par rapport à la distribution des cellules sur chacun des axes:
+
+```
+hist(res2[[5]], data=patient4.2, subset="FL1")
+```
+
+![FL1 density VS clusters][FC_4.5]
+
+```
+hist(res2[[5]], data=patient4.2, subset="FL2")
+```
+
+![FL2 density VS clusters][FC_4.6]
+
+### La prochaine étape
+Après avoir réussi à réconcilier ggplot2 avec flowClust, il serait bien de passer à de vrais méthodes Bayésiennes!
