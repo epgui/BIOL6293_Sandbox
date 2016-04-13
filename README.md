@@ -891,7 +891,9 @@ lgcl_SS <- logicleTransform(w=0.5, t=500, m=3, a=0)
 tData <- transform(pt4_fs_trunc, FS=lgcl_FS(FS), SS=lgcl_SS(SS))
 
 # Voyons voir à quoi ressemble le graphe résultant.
-plot(as.numeric(exprs(tData[[1]]$SS)) ~ as.numeric(exprs(tData[[1]]$FS)), ylab="SSC (linéaire)", xlab="FSC (linéaire)")
+plot(as.numeric(exprs(tData[[1]]$SS)) ~ as.numeric(exprs(tData[[1]]$FS)),
+     ylab="SSC (linéaire)",
+     xlab="FSC (linéaire)")
 ```
 
 ![Graphe des données transformées][FC_0.2]
