@@ -965,6 +965,12 @@ make.nice.plot <- function(data,
 }
 ```
 
+On écrit tout ça, et on essaie de l'exécuter... Mais on dirait que rien ne se passe! Kessé ça? C'est beaucoup d'effort pour rien, dites-vous?
+
+Détrompez-vous! On vient d'assigner à la 'variable' `make.nice.plot` toute une série d'instructions, délimitées par des `{ }` et acceptant une liste de paramètres. De telles variables qui contiennent des séries d'instructions s'appellent des fonctions. Pour faire appel à une fonction, on écrit `make.nice.plot()`, avec la liste des paramètres dans les parenthèses. Reconnaissez-vous la syntaxe? Vous avez certainement déjà utilisé des fonctions en travaillant avec R!
+
+Les paramètres qu'acceptent les fonctions peuvent être obligatoires ou optionnels, et les paramètres optionnels peuvent prendre une valeur par défaut, qui est alors déclarée dans la liste des paramètres (voir ci-haut pour des exemples).
+
 En programmation, les fonctions sont importantes: elles permettent la réutilisation judicieuse de code. Une fois définie, une fonction bien pensée est très simple d'utilisation et très versatile. Un autre avantage d'utiliser des fonctions pour réutiliser du code, c'est que si jamais on veut y apporter des changements, on peut faire des modifications une seule fois et ça va se réfléter sur chaque appel à la fonction!
 
 Voyons comment il est simple de l'utiliser.
