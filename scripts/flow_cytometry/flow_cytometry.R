@@ -60,11 +60,10 @@ library(flowStats) # Bioconductor
 library(flowClust) # Bioconductor
 library(openCyto)  # Bioconductor
 library(ggplot2)
-library(GGally)
 
 setwd(file.path(PROJHOME, "data"))
 
-# Fetch data
+# Choisir les fichiers .FCS qu'on veut analyser et mettre leur path dans un vecteur de strings
 pt4_fclist <- c("4 Normal/0025.FCS",
                 "4 Normal/0026.FCS",
                 "4 Normal/0027.FCS",
@@ -73,9 +72,9 @@ pt4_fclist <- c("4 Normal/0025.FCS",
                 "4 Normal/0030.FCS",
                 "4 Normal/0031.FCS",
                 "4 Normal/0032.FCS")
-pt5_fclist <- c("5 AML/0033.FCS",
-                "5 AML/0034.FCS",
-                "5 AML/0035.FCS",
+pt5_fclist <- c("5 AML/0033.FCS",      # OK bon oui ici on triche parce qu'on sait quels patients sont
+                "5 AML/0034.FCS",      # en santé et lesquels ont reçu un diagnostique de AML, mais la
+                "5 AML/0035.FCS",      # démo reste intéressante!
                 "5 AML/0036.FCS",
                 "5 AML/0037.FCS",
                 "5 AML/0038.FCS",
@@ -86,6 +85,9 @@ pt5_fclist <- c("5 AML/0033.FCS",
 pt4_fs <- read.flowSet(pt4_fclist, dataset=2, transformation=FALSE, alter.names=TRUE)
 pt5_fs <- read.flowSet(pt5_fclist, dataset=2, transformation=FALSE, alter.names=TRUE)
 
+# Voir à quoi ressemblent les objets de type 'flowFrame' à l'intérieur des flowSets
+
+# Définir les channels d'intérêt
 channelList <- c("FS", "SS", "FL1", "FL2", "FL3", "FL4", "FL5")
 
 # Truncate extreme values of FS
