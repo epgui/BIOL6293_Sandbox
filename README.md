@@ -12,8 +12,7 @@ de limites techniques: le jeu de données complet fait plusieurs Go en taille.
 
 ### Part I : visualisation des données
 
-* L'installation de rgdal et de rgeos demande quelques étapes supplémentaires:
-* http://tlocoh.r-forge.r-project.org/mac_rgeos_rgdal.html
+Avant d'utiliser les librairies rgdal et rgeos dans R, on doit installer les logiciels gdal et geos: http://tlocoh.r-forge.r-project.org/mac_rgeos_rgdal.html
 
 [SA_1]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-1.PNG?raw=true "Graphique de Kent et Westmorland avec les points de cueillette des échantillons"
 [SA_2]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/SA-2.PNG?raw=true "Graphique de Kings avec les points de cueillette des échantillons"
@@ -252,7 +251,7 @@ cor.test(coord.epsg2953$Conc, coord.epsg2953$Conc[knn1])
 > 0.03866938 0.56249265
 
 >sample estimates:
->      cor 
+>      cor
 >	0.3253155
 
 ```
@@ -343,15 +342,15 @@ moran.test(coord.epsg2953$Conc, listw2U(spknear45))
 >data:  coord.epsg2953$Conc  
 >weights: listw2U(spknear45)  
 >
->Moran I statistic standard deviate = -0.97645, p-value = 0.8356 
+>Moran I statistic standard deviate = -0.97645, p-value = 0.8356
 
 >alternative hypothesis: greater
 
 >sample estimates:
 
->Moran I statistic		 Expectation		 Variance 
+>Moran I statistic		 Expectation		 Variance
 
->      -0.03682426       -0.02222222        0.00022363 
+>      -0.03682426       -0.02222222        0.00022363
 
 ```
 
@@ -369,9 +368,9 @@ summary(modele1)
 >
 > Residuals:
 
->      Min        1Q    Median        3Q       Max 
+>      Min        1Q    Median        3Q       Max
 
-> -0.119869 -0.055732 -0.009389  0.035900  0.214515 
+> -0.119869 -0.055732 -0.009389  0.035900  0.214515
 >
 > Coefficients:
 
@@ -389,7 +388,7 @@ summary(modele1)
 
 >  (2 observations deleted due to missingness)
 
-> Multiple R-squared:  0.05209,	Adjusted R-squared:  0.005852 
+> Multiple R-squared:  0.05209,	Adjusted R-squared:  0.005852
 
 > F-statistic: 1.127 on 2 and 41 DF,  p-value: 0.334
 
@@ -408,11 +407,11 @@ hist(concentrations$Conc)
 >group: HILLS    
   vars  n mean   sd median trimmed  mad min  max range skew kurtosis   se    
 1    1 14 0.05 0.06   0.03    0.04 0.04   0 0.18  0.18 0.88    -0.83 0.02    
-`-------------------------------------------------------------------------------------------------------------` 
+`-------------------------------------------------------------------------------------------------------------`
 >group: KENT   
   vars  n mean   sd median trimmed  mad min max range skew kurtosis   se   
 1    1 46 0.09 0.08   0.07    0.08 0.07   0 0.3   0.3  1.1      0.2 0.01    
-`-------------------------------------------------------------------------------------------------------------` 
+`-------------------------------------------------------------------------------------------------------------`
 >group: KINGS   
   vars n mean   sd median trimmed  mad  min  max range skew kurtosis   se   
 1    1 7 0.06 0.03   0.06    0.06 0.03 0.02 0.11   0.1 0.27    -1.53 0.01    
@@ -434,7 +433,7 @@ skew = 1.1799, z = 3.6102, p-value = 0.0003059
 alternative hypothesis: data have a skewness
 
  #Les résidus ne sont pas normalement distribués
- 
+
  logConc <- log10(concentrations$Conc+1)
  anova2 <- aov(logConc ~ concentrations$Comtes)
  summary(anova2)
@@ -451,7 +450,7 @@ skew = 1.0565, z = 3.3189, p-value = 0.0009038
 alternative hypothesis: data have a skewness
 
  #Toujours pas
- 
+
  xConc <- 1/(1+concentrations$Conc)
  anova3 <- aov(xConc ~ concentrations$Comtes)
  summary(anova3)
@@ -467,7 +466,7 @@ data:  anova3$residuals
 skew = -0.93883, z = -3.02300, p-value = 0.002503
 alternative hypothesis: data have a skewness
 
- 
+
  sqrtlogConc <- sqrt(logConc)
  anova4 <- aov(sqrtlogConc ~ concentrations$Comtes)
  summary(anova4)
@@ -491,9 +490,9 @@ skew = 0.13719, z = 0.49825, p-value = 0.6183
 alternative hypothesis: data have a skewness
 
  summary(anova4$residuals)
-     Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
--0.175000 -0.066140 -0.003878  0.000000  0.049600  0.164600 
- 
+     Min.   1st Qu.    Median      Mean   3rd Qu.      Max.
+-0.175000 -0.066140 -0.003878  0.000000  0.049600  0.164600
+
  #Présentation des résidus
  layout(matrix(1:4, 2, 2))
  plot(lm(sqrtlogConc ~ concentrations$Comtes), which = 1:4)  
@@ -512,7 +511,7 @@ plot(concentrations$Comtes, sqrtlogConc, xlab = "comtés", ylab = "sqrt(log10(Co
 
 ![Representation graphique de l'anova][SA_13]
 
-``` 
+```
 #Comparaisons planifié KENT et HILLS et KINGS et HILLS
  contrasts(concentrations$Comtes) <- cbind(c(-1,1,0), c(1,0,-1))
  contrasts(concentrations$Comtes)
@@ -526,22 +525,22 @@ Call:
 aov(formula = sqrtlogConc ~ concentrations$Comtes)
 
 Residuals:
-      Min        1Q    Median        3Q       Max 
--0.174951 -0.066136 -0.003878  0.049600  0.164613 
+      Min        1Q    Median        3Q       Max
+-0.174951 -0.066136 -0.003878  0.049600  0.164613
 
 Coefficients:
                            Estimate Std. Error t value Pr(|t|)    
 (Intercept)                 0.10166    0.02340   4.345 5.09e-05 ***
-concentrations$ComtesKENT   0.07329    0.02672   2.743   0.0079 ** 
+concentrations$ComtesKENT   0.07329    0.02672   2.743   0.0079 **
 concentrations$ComtesKINGS  0.04869    0.04053   1.201   0.2340    
 ---
 Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 Residual standard error: 0.08755 on 64 degrees of freedom
-Multiple R-squared:  0.1057,	Adjusted R-squared:  0.0778 
+Multiple R-squared:  0.1057,	Adjusted R-squared:  0.0778
 F-statistic: 3.784 on 2 and 64 DF,  p-value: 0.02797
 
- 
+
  #Comparasion non-planifié
  anova(anova4)
 Analysis of Variance Table
@@ -567,11 +566,25 @@ KINGS-KENT  -0.02460044 -0.109826965 0.06062608 0.7686623
 ```
 
 
-  
+
 ## <a name="flow_cytometry">Analyse statistique de cytométrie en flux</a>
+[FC_workflow]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_workflow.png?raw=true "Workflow de cytométrie en flux"
 [FC_1]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_1.png?raw=true "FS pour tous les jeux de données"
 [FC_2]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_2.png?raw=true "Graphe de SS et FS pour le premier jeu de données"
 [FC_3]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_3.png?raw=true "Plot all of the things like it's your last day on earth"
+
+### Qu'est-ce que la cytométrie en flux?
+C'est une technique excessivement populaire en biochimie et en biologie médicale, mais peut-être moins dans certaines branches de la biologie ou de l'écologie. Le principe est illustré ci-dessous:
+
+![Workflow de cytométrie en flux][FC_workflow]
+
+### Visualisation des données
+L'instrument produit un fichier .FCS gigantesque qui contient l'information d'intensité lumineuse capté par les détecteurs SSC, FSC, et un certain nombre de détecteurs à fluorescence (par exemple FL1, FL2, FL3, FL4, FL5, FL6, FL7, ...) selon l'appareil utilisé. Le premier problème, c'est de visualiser toutes ces données pour avoir une impression initiale de quoi il s'agit.
+
+### Préparation de l'environnement R
+La cytométrie en flux est une technique excessivement populaire. Initialement, la seule manière d'analyser les données c'était d'avoir recours aux logiciels commerciaux qui viennent avec l'appareil ou qu'on peut acheter de commerçants indépendants. Tous les appareils ont leurs propres logiciels, et il existe une grande variété de logiciels disponibles. Le problème c'est que les méthodes d'analyse de ces logiciels ne sont pas open source, et c'est donc très suboptimal en termes de reproductibilité.
+
+De plus en plus de solutions sont développées pour permettre l'analyse de données complexes de cytométrie en flux avec R. Voici un guide d'installation pour les librairies de base.
 
 Vérifiez que vous avez bel et bien la dernière version de R à partir de la console de R:
 
