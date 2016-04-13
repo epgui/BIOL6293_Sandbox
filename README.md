@@ -589,6 +589,8 @@ KINGS-KENT  -0.02460044 -0.109826965 0.06062608 0.7686623
 [FC_3]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_3.png?raw=true "Plot all of the things like it's your last day on earth"
 [FC_3.1]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_3.1.png?raw=true "Plot all of the things like it's your last day on earth"
 [FC_3.2]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_3.2.png?raw=true "Plot all of the things like it's your last day on earth"
+[FC_4]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_4.png?raw=true "BIC of 10 clusters"
+[FC_4.1]: https://github.com/epgui/BIOL6293_Sandbox/blob/master/images/FC_4.1.png?raw=true "Résultats du clustering"
 
 ### Qu'est-ce que la cytométrie en flux?
 C'est une technique excessivement populaire en biochimie et en biologie médicale, mais peut-être moins dans certaines branches de la biologie ou de l'écologie. Le principe est illustré ci-dessous:
@@ -1050,5 +1052,129 @@ Cool, on a développé notre propre petite méthode graphique pour visualiser le
 
 
 
-
 ### Identification automatisée des populations par clustering
+On commence par l'analyse à 1 cluster avec les paramètres FS et SS afin d'identifier les outliers ou les valeurs extrêmes, qui seront retirées des analyses subséquentes. K c'est le nombre de clusters, B le nombre d'itérations maximal de l'algorithme EM.
+
+```
+patient4 <- tData[[1]]
+res1 <- flowClust(patient4, varNames=c("FS", "SS"), K=1, B=200)
+
+     Using the parallel (multicore) version of flowClust with 8 cores
+```
+
+Ensuite on procède à l'analyse de FL1 et FL2, que j'ai choisi parce qu'ils semblaient différer pas mal entre le patient sain et le patient atteint de AML. On performe une analyse avec 10 clusters.
+
+```
+patient4.2 <- patient4[patient4 %in% res1,]
+res2 <- flowClust(patient4.2, varNames=c("FL1","FL2"), K=1:10, B=100)
+
+     Using the parallel (multicore) version of flowClust with 8 cores
+```
+
+On choisit le meilleur modèle à l'aide du BIC.
+
+```
+criterion(res2, "BIC")
+
+[1] -19416.450 -10676.642  -7706.767  -5774.253  -5062.323  -4950.900  -4760.073  -4752.090  -4601.089
+[10]  -4598.855
+
+plot(criterion(res2,"BIC"))
+```
+
+![BIC of 10 clusters][FC_4]
+
+On voit donc que les valeurs de BIC restent relativement constantes à partir du 7e cluster. On choisit le modèle à 7 clusters et on check les résultats:
+
+```
+summary(res2[[7]])
+
+** Experiment Information **
+Experiment name: Flow Experiment
+Variables used: FL1 FL2
+** Clustering Summary **
+Number of clusters: 7
+Proportions: 0.30073 0.1789337 0.03301198 0.06883092 0.1375168 0.2437108 0.03726587
+** Transformation Parameter **
+lambda: 0.7633071
+** Information Criteria **
+Log likelihood: -2165.735
+BIC: -4760.073
+ICL: -46648.13
+** Data Quality **
+Number of points filtered from above: 0 (0%)
+Number of points filtered from below: 168 (0.62%)
+Rule of identifying outliers: 90% quantile
+Number of outliers: 1164 (4.28%)
+Uncertainty summary:
+```
+
+On voit que la règle pour identifier les valeurs extrêmes est la règle du 90% quantile. On peut spécifier une règle différente et choisir d'être plus conservateur avec une règle du 95% quantile.
+
+```
+ruleOutliers(res2[[7]]) <- list(level=0.95)
+
+summary(res2[[7]])
+
+** Experiment Information **
+Experiment name: Flow Experiment
+Variables used: FL1 FL2
+** Clustering Summary **
+Number of clusters: 7
+Proportions: 0.30073 0.1789337 0.03301198 0.06883092 0.1375168 0.2437108 0.03726587
+** Transformation Parameter **
+lambda: 0.7633071
+** Information Criteria **
+Log likelihood: -2165.735
+BIC: -4760.073
+ICL: -46648.13
+** Data Quality **
+Number of points filtered from above: 0 (0%)
+Number of points filtered from below: 168 (0.62%)
+Rule of identifying outliers: 95% quantile
+Number of outliers: 405 (1.49%)
+Uncertainty summary:
+```
+
+On peut aussi combiner à cette règle un paramètre additionnel. Si, par exemple, on veut associer un événement à un cluster uniquement si la probabilité postérieure est supérieure à 0.6, on peut le spécifier:
+
+```
+ruleOutliers(res2[[7]]) <- list(z.cutoff=0.6)
+
+Rule of identifying outliers: 95% quantile,
+                              probability of  assignment < 0.6
+
+summary(res2[[7]])
+
+** Experiment Information **
+Experiment name: Flow Experiment
+Variables used: FL1 FL2
+** Clustering Summary **
+Number of clusters: 7
+Proportions: 0.30073 0.1789337 0.03301198 0.06883092 0.1375168 0.2437108 0.03726587
+** Transformation Parameter **
+lambda: 0.7633071
+** Information Criteria **
+Log likelihood: -2165.735
+BIC: -4760.073
+ICL: -46648.13
+** Data Quality **
+Number of points filtered from above: 0 (0%)
+Number of points filtered from below: 168 (0.62%)
+Rule of identifying outliers: 95% quantile,
+                              probability of  assignment < 0.6
+Number of outliers: 8512 (31.29%)
+Uncertainty summary:
+```
+
+La quantité de valeurs jugées extrêmes augmente, naturellement.
+
+Visualisons les résultats! (Désolé, je n'arrive toujours pas à réconcilier flowClust avec ggplot2... Mais je vais surement y arriver quand personne ne sera là pour apprécier le résultat!)
+
+```
+plot(res2[[7]], data=patient4.2, level=0.8, z.cutoff=0)
+
+    Rule of identifying outliers: 80% quantile
+```
+
+![Résultats du clustering][FC_4.1]
