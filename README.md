@@ -43,49 +43,86 @@ library(moments)
 # Solution for file path found here: https://gist.github.com/jennybc/362f52446fe1ebc4c49f
 setwd(file.path(PROJHOME, "data"))
 
-#Lis la carte des comtés du Nouveau-Brunswick disponible sur GéoNB
+# Lis la carte des comtés du Nouveau-Brunswick disponible sur GéoNB
 comtes <- readShapePoly("geonb_county-comte_shp/geonb_county-comte.shp")
 summary(comtes)
 
-#Initialise la projection EPSG 2953 utilisés par la carte du NB
+# Initialise la projection EPSG 2953 utilisés par la carte du NB
 crs <- CRS("+init=epsg:2953")
 proj4string(comtes) <- crs
 summary(comtes)
 
-#Crée un systéme de coordonnées(projection) pour la carte du Nouveau-Brunswick utilisant les longitudes et latitudes et le datum WGS84
+# Crée un systéme de coordonnées(projection) pour la carte du Nouveau-Brunswick utilisant les
+# longitudes et latitudes et le datum WGS84
 wgs.84 <- "+proj=longlat +datum=WGS84"
-epsg.2953 <- "+init=epsg:2953 +proj=sterea +lat_0=46.5 +lon_0=-66.5 +k=0.999912 +x_0=2500000 +y_0=7500000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0
-+units=m +no_defs"
+epsg.2953 <- paste("+init=epsg:2953",
+                   "+proj=sterea",
+                   "+lat_0=46.5",
+                   "+lon_0=-66.5",
+                   "+k=0.999912",
+                   "+x_0=2500000",
+                   "+y_0=7500000",
+                   "+ellps=GRS80",
+                   "+towgs84=0,0,0,0,0,0,0",
+                   "+units=m +no_defs",
+                   collapse=" ")
 
-#Lis le fichier comportant les coordonnées (longitude, latitude) des échantillons d'eaux souterraines du comtés de KENT
+# Lis le fichier comportant les coordonnées (longitude, latitude) des échantillons d'eaux
+# souterraines du comtés de KENT
 coordonnees <- read.table("coordonnees.txt", sep = "\t", header = TRUE)
 
-#La longitude est contenue dans la colonne 3 du fichier alors que la latitude est dans la colonne 2
+# La longitude est contenue dans la colonne 3 du fichier alors que la latitude est dans la colonne 2
 coordonnees
 
-#Transforme les coordonnées présente dans le fichier en objet spatiale en l'occurence, des points.
+# Transforme les coordonnées présente dans le fichier en objet spatiale en l'occurence, des points.
 coordinates(coordonnees) <- c(3,2)
 class(coordonnees)
 summary(coordonnees)
 
-#Initialise la projection des coordonnées en wgs.84 à l'aide de epsg:4326
+# Initialise la projection des coordonnées en wgs.84 à l'aide de epsg:4326
 crs2 <- CRS("+init=epsg:4326")
 proj4string(coordonnees) <- crs2
 summary(coordonnees)
 
-#Transforme la projection wgs 84 des points de coordonnées en projection EPSG2953 du Nouveau-Brunswick
+# Transforme la projection wgs 84 des points de coordonnées en projection EPSG2953 du Nouveau-Brunswick
 coord.epsg2953 <- spTransform(coordonnees, CRS(epsg.2953))
 summary(coord.epsg2953)
 
-#Fais un graphique de KENT et Westmorland avec les points de ceuillettes des échantillons
-plot(comtes[5,], xlab = "Longitude", ylab = "Latitude", axes = TRUE, main = "Comté de KENT")
-plot(comtes[9,], add=TRUE)
-plot(coord.epsg2953, pch =21, cex = 0.7, bg="dodgerblue", add = TRUE)
+# Fais un graphique de KENT et Westmorland avec les points de ceuillettes des échantillons
+plot(comtes[5,],
+     xlab = "Longitude",
+     ylab = "Latitude",
+     axes = TRUE,
+     main = "Comté de KENT")
+plot(comtes[9,],
+     add=TRUE)
+plot(coord.epsg2953,
+     pch =21,
+     cex = 0.7,
+     bg="dodgerblue",
+     add = TRUE)
 
-#labels
-pointLabel(coord.epsg2953@coords, labels = coordonnees$ID, cex = 0.7, allowSmallOverlap = FALSE, col ="darkolivegreen", offset = 0)
-north.arrow(2640000, 7545000,len = 1500, "N", col="light gray")
-map.scale(2555000,7460000,10000,"km",5,subdiv=2,tcol='black',scol='black',sfcol='black')
+# labels
+pointLabel(coord.epsg2953@coords,
+           labels = coordonnees$ID,
+           cex = 0.7,
+           allowSmallOverlap = FALSE,
+           col = "darkolivegreen",
+           offset = 0)
+north.arrow(2640000,
+            7545000,
+            len = 1500,
+            "N",
+            col = "light gray")
+map.scale(2555000,
+          7460000,
+          10000,
+          "km",
+          5,
+          subdiv = 2,
+          tcol = 'black',
+          scol = 'black',
+          sfcol = 'black')
 
 ```
 
@@ -100,13 +137,38 @@ proj4string(coordonneeskings) <- crs2
 coord.kings <- spTransform(coordonneeskings, CRS(epsg.2953))
 
 #Fait un graphique de Kings avec les points de ceuillettes des échantillons
-plot(comtes[8,], xlab = "Longitude", ylab = "Latitude", axes = TRUE, main = "Comté de KINGS")
-plot(coord.kings, pch =21, cex = 0.7, bg="dodgerblue", add = TRUE)
+plot(comtes[8,],
+     xlab = "Longitude",
+     ylab = "Latitude",
+     axes = TRUE,
+     main = "Comté de KINGS")
+plot(coord.kings,
+     pch = 21,
+     cex = 0.7,
+     bg = "dodgerblue",
+     add = TRUE)
 
 #labels
-pointLabel(coord.kings@coords, labels = coordonneeskings$ID, cex = 0.7, allowSmallOverlap = FALSE, col ="darkolivegreen", offset = 0)
-north.arrow(2600000, 7440000,len = 1500, "N", col="light gray")
-map.scale(2510000,7350000,10000,"km",5,subdiv=2,tcol='black',scol='black',sfcol='black')
+pointLabel(coord.kings@coords,
+           labels = coordonneeskings$ID,
+           cex = 0.7,
+           allowSmallOverlap = FALSE,
+           col = "darkolivegreen",
+           offset = 0)
+north.arrow(2600000,
+            7440000,
+            len = 1500,
+            "N",
+            col="light gray")
+map.scale(2510000,
+          7350000,
+          10000,
+          "km",
+          5,
+          subdiv = 2,
+          tcol = 'black',
+          scol = 'black',
+          sfcol = 'black')
 
 ```
 
@@ -120,13 +182,38 @@ proj4string(coordonneesalbert) <- crs2
 coord.albert <- spTransform(coordonneesalbert, CRS(epsg.2953))
 
 #Fait un graphique du comtés de Albert avec les points de ceuillettes des échantillons près de Hillsborough
-plot(comtes[14,], xlab = "Longitude", ylab = "Latitude", axes = TRUE, main = "Comté de Albert")
-plot(coord.albert, pch =21, cex = 0.7, bg="dodgerblue", add = TRUE)
+plot(comtes[14,],
+     xlab = "Longitude",
+     ylab = "Latitude",
+     axes = TRUE,
+     main = "Comté de Albert")
+plot(coord.albert,
+     pch = 21,
+     cex = 0.7,
+     bg = "dodgerblue",
+     add = TRUE)
 
 #labels
-pointLabel(coord.albert@coords, labels = coordonneesalbert$ID, cex = 0.7, allowSmallOverlap = FALSE, col ="darkolivegreen", offset = 0)
-north.arrow(2647000, 7450000,len = 1000, "N", col="light gray")
-map.scale(2605000,7440000,10000,"km",5,subdiv=2,tcol='black',scol='black',sfcol='black')
+pointLabel(coord.albert@coords,
+           labels = coordonneesalbert$ID,
+           cex = 0.7,
+           allowSmallOverlap = FALSE,
+           col = "darkolivegreen",
+           offset = 0)
+north.arrow(2647000,
+            7450000,
+            len = 1000,
+            "N",
+            col = "light gray")
+map.scale(2605000,
+          7440000,
+          10000,
+          "km",
+          5,
+          subdiv = 2,
+          tcol = 'black',
+          scol = 'black',
+          sfcol = 'black')
 
 ```
 
@@ -135,12 +222,38 @@ map.scale(2605000,7440000,10000,"km",5,subdiv=2,tcol='black',scol='black',sfcol=
 ```
 
 #Carte composite NB
-plot(comtes, main = "Nouveau-Brunswick", axes = FALSE)
-plot(coord.epsg2953, pch =21,cex = 0.5, bg="dodgerblue", add = TRUE)
-plot(coord.kings, pch =21, cex = 0.5, bg="yellow", add = TRUE)
-plot(coord.albert, pch =21, cex = 0.5, bg="red", add = TRUE)
-north.arrow(2660000, 7550000,len = 5000, "N", col="light gray")
-map.scale(2350000,7310000,100000,"km",5,subdiv=20,tcol='black',scol='black',sfcol='black')
+plot(comtes,
+     main = "Nouveau-Brunswick",
+     axes = FALSE)
+plot(coord.epsg2953,
+     pch = 21,
+     cex = 0.5,
+     bg = "dodgerblue",
+     add = TRUE)
+plot(coord.kings,
+     pch = 21,
+     cex = 0.5,
+     bg = "yellow",
+     add = TRUE)
+plot(coord.albert,
+     pch = 21,
+     cex = 0.5,
+     bg = "red",
+     add = TRUE)
+north.arrow(2660000,
+            7550000,
+            len = 5000,
+            "N",
+            col = "light gray")
+map.scale(2350000,
+          7310000,
+          100000,
+          "km",
+          5,
+          subdiv = 20,
+          tcol = 'black',
+          scol = 'black',
+          sfcol = 'black')
 
 ```
 
@@ -160,21 +273,34 @@ ncol <- round((xmax - xmin)/cell.length, 0)
 nrow <- round((ymax - ymin)/cell.length, 0)
 ncol
 nrow
-blank.grid <- raster(ncols=ncol, nrows=nrow, xmn=xmin, xmx=xmax, ymn=ymin, ymx=ymax)
+blank.grid <- raster(ncols = ncol, nrows = nrow, xmn = xmin, xmx = xmax, ymn = ymin, ymx = ymax)
 dataconc <- read.table("concentrations.txt", sep = "\t", header = TRUE)
 xs <- dataconc[,3]
 ys <- dataconc[,2]
 xy <- cbind(xs,ys)
 x <- dataconc$Conc
 land.grid = rasterize(xy, blank.grid, x, mean)
-plot(comtes2, main = "Nouveau-Brunswick", axes = TRUE)
-plot(land.grid, add = TRUE, axes = FALSE)
+plot(comtes2,
+     main = "Nouveau-Brunswick",
+     axes = TRUE)
+plot(land.grid,
+     add = TRUE,
+     axes = FALSE)
 
 #Changement de couleur et d'intervale.
 palette <- brewer.pal(5, "YlOrRd")
-plot(land.grid, col=palette, main="Concentration en radium (pg/L) au Nouveau-Brunswick", axes = FALSE)
-plot(comtes2, add=TRUE, axes = FALSE)
-north.arrow(-64.000,47.0000,len = 0.09, "N", col="light gray")
+plot(land.grid,
+     col = palette,
+     main = "Concentration en radium (pg/L) au Nouveau-Brunswick",
+     axes = FALSE)
+plot(comtes2,
+     add = TRUE,
+     axes = FALSE)
+north.arrow(-64.000,
+            47.0000,
+            len = 0.09,
+            "N",
+            col = "light gray")
 
 ```
 
@@ -189,15 +315,28 @@ ncol2 <- round((xmax - xmin)/cell.length, 0)
 nrow2 <- round((ymax - ymin)/cell.length, 0)
 ncol2
 nrow2
-blank.grid2 <- raster(ncols=ncol2, nrows=nrow2, xmn=xmin, xmx=xmax, ymn=ymin, ymx=ymax)
+blank.grid2 <- raster(ncols = ncol2, nrows = nrow2, xmn = xmin, xmx = xmax, ymn = ymin, ymx = ymax)
 land.grid2 = rasterize(xy, blank.grid2, x, mean)
-plot(comtes2, main = "Nouveau-Brunswick", axes = TRUE)
-plot(land.grid2, add = TRUE, axes = FALSE)
+plot(comtes2,
+     main = "Nouveau-Brunswick",
+     axes = TRUE)
+plot(land.grid2,
+     add = TRUE,
+     axes = FALSE)
 
 #Changement de couleur et d'intervale.
-plot(land.grid2, col=palette, main="Concentration en radium (pg/L) au Nouveau-Brunswick", axes = FALSE)
-plot(comtes2, add=TRUE, axes = FALSE)
-north.arrow(-64.000,47.0000,len = 0.09, "N", col="light gray")
+plot(land.grid2,
+     col = palette,
+     main = "Concentration en radium (pg/L) au Nouveau-Brunswick",
+     axes = FALSE)
+plot(comtes2,
+     add = TRUE,
+     axes = FALSE)
+north.arrow(-64.000,
+            47.0000,
+            len = 0.09,
+            "N",
+            col = "light gray")
 
 ```
 
@@ -209,14 +348,44 @@ north.arrow(-64.000,47.0000,len = 0.09, "N", col="light gray")
 class(coord.epsg2953)
 conc <- coordonnees$Conc
 break.points <- c(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35)
-groups <- cut(conc, break.points, include.lowest = TRUE, label = FALSE)
+groups <- cut(conc,
+              break.points,
+              include.lowest = TRUE,
+              label = FALSE)
 palette2 <- brewer.pal(7, "YlOrRd")
-plot(comtes[5,], axes = TRUE, main = "Concentration en radium dans les eaux souterraines de puits du comté de Kent")
-plot(coord.epsg2953, pch = 21, bg = palette2[groups], add = TRUE)
-north.arrow(2640000, 7545000,len = 1500, "N", col="light gray")
-map.scale(2640000,7565000,10000,"km",5,subdiv=2,tcol='black',scol='black',sfcol='black')
-legend(2550000, 7565000, legend=c("<0.05","0.05 à 0.1", "0.1 à 0.15", "0.15 à 0.2","0.2 à 0.25", "0.25 à 0,30", ">0.30"), pch=21, pt.bg=palette2, cex=0.6, title="Concentration Ra (pg/L)")
-pointLabel(coord.epsg2953@coords, labels = coordonnees$ID, cex = 0.7, allowSmallOverlap = FALSE, col ="darkolivegreen")
+plot(comtes[5,],
+     axes = TRUE,
+     main = "Concentration en radium dans les eaux souterraines de puits du comté de Kent")
+plot(coord.epsg2953,
+     pch = 21,
+     bg = palette2[groups],
+     add = TRUE)
+north.arrow(2640000,
+            7545000,
+            len = 1500,
+            "N",
+            col = "light gray")
+map.scale(2640000,
+          7565000,
+          10000,
+          "km",
+          5,
+          subdiv = 2,
+          tcol = 'black',
+          scol = 'black',
+          sfcol = 'black')
+legend(2550000,
+       7565000,
+       legend = c("<0.05","0.05 à 0.1", "0.1 à 0.15", "0.15 à 0.2","0.2 à 0.25", "0.25 à 0,30", ">0.30"),
+       pch = 21,
+       pt.bg = palette2,
+       cex = 0.6,
+       title = "Concentration Ra (pg/L)")
+pointLabel(coord.epsg2953@coords,
+           labels = coordonnees$ID,
+           cex = 0.7,
+           allowSmallOverlap = FALSE,
+           col = "darkolivegreen")
 
 ```
 
@@ -238,37 +407,40 @@ cor.test(coord.epsg2953$Conc, coord.epsg2953$Conc[knn1])
 
 > cor.test(coord.epsg2953$Conc, coord.epsg2953$Conc[knn1])
 
->Pearson's product-moment correlation
+> Pearson's product-moment correlation
 
->data:  coord.epsg2953$Conc and coord.epsg2953$Conc[knn1]
+> data:  coord.epsg2953$Conc and coord.epsg2953$Conc[knn1]
 
->t = 2.282, df = 44, p-value = 0.02738
+> t = 2.282, df = 44, p-value = 0.02738
 
->alternative hypothesis: true correlation is not equal to 0
+> alternative hypothesis: true correlation is not equal to 0
 
->95 percent confidence interval:
+> 95 percent confidence interval:
 
 > 0.03866938 0.56249265
 
->sample estimates:
+> sample estimates:
 >      cor
 >	0.3253155
 
 ```
 
-#Trouve les 45 plus proche voisin
-knear45 <- knearneigh(coord.epsg2953, k=45, longlat = FALSE, RANN=FALSE)
+# Trouve les 45 plus proche voisin
+knear45 <- knearneigh(coord.epsg2953, k = 45, longlat = FALSE, RANN = FALSE)
 
-#Crée un objet pour stocker les corrélations
-correlations <- vector(mode="numeric", length=45)
+# Crée un objet pour stocker les corrélations
+correlations <- vector(mode = "numeric", length = 45)
 
-for (i in 1: 45) {
+for (i in 1:45) {
   correlations[i] <- cor(coord.epsg2953$Conc, coord.epsg2953$Conc[knear45$nn[,i]])
 }
 correlations
 
-plot(correlations, xlab="nth nearest neighbour", ylab="Correlation")
-lines(lowess(correlations, f=1/10), col="blue")		# Ajoute une ligne entre chaque point
+plot(correlations,
+     xlab = "nth nearest neighbour",
+     ylab = "Correlation")
+lines(lowess(correlations, f = 1/10),
+      col = "blue")		# Ajoute une ligne entre chaque point
 
 ```
 
@@ -278,7 +450,7 @@ lines(lowess(correlations, f=1/10), col="blue")		# Ajoute une ligne entre chaque
 
 #Création d'une matrice de poids basée sur la distance inverse
 d.matrix <- spDists(coord.epsg2953, coord.epsg2953, longlat = FALSE)
-d.matrix #Création d'une matrice de distance
+d.matrix      # Création d'une matrice de distance
 
 #Détermine le nombre de points
 np <- knear45$np
@@ -292,16 +464,17 @@ np
 ```
 
 #Crée un vecteur pour stocké les poids
-d.weights <- vector(mode="list", length=np)
+d.weights <- vector(mode = "list", length = np)
 
-for (i in 1:np) {						# Une boucle prenant chaque point
-  neighbours <- knear45$nn[i,]		# Trouve les voisins pour le point i
+for (i in 1:np) {						          # Une boucle prenant chaque point
+  neighbours <- knear45$nn[i,]		    # Trouve les voisins pour le point i
   distances <- d.matrix[i,neighbours]	# Calcule la distance entre i et ses voisins
-  d.weights[[i]] <- 1/distances^0.5	# Calcule un poids entre i et chaque voisin en fonction de la distance qui les séparent
+  d.weights[[i]] <- sqrt(1/distances)	# Calcule un poids entre i et chaque voisin en fonction
+                                      #    de la distance qui les séparent
 }
 
-head(knear45$nn, n=1)					# La liste des voisins
-head(d.weights, n=1)					# La liste des poids correspondants
+head(knear45$nn, n = 1)					      # La liste des voisins
+head(d.weights, n = 1)					      # La liste des poids correspondants
 
 ```
 
@@ -327,7 +500,9 @@ knear45nb
 
 #Examen de l'autoccorélation entre les points d'échantillons selon la concentration en radium
 spknear45 <- nb2listw(knear45nb, glist=d.weights, style="C")
-moran.plot(coord.epsg2953$Conc, spknear45, labels = TRUE)
+moran.plot(coord.epsg2953$Conc,
+           spknear45,
+           labels = TRUE)
 moran.test(coord.epsg2953$Conc, spknear45)
 moran.test(coord.epsg2953$Conc, listw2U(spknear45))
 
@@ -382,7 +557,7 @@ summary(modele1)
 
 > Profondeur   9.341e-05  2.607e-04   0.358  0.72197   
 >
-> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+> Signif. codes:  0 ‘\*\*\*’ 0.001 ‘\*\*’ 0.01 ‘\*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 >
 > Residual standard error: 0.08431 on 41 degrees of freedom
 
