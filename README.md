@@ -130,13 +130,13 @@ map.scale(2555000,
 
 ```
 
-#comtés de Kings
+# comtés de Kings
 coordonneeskings <- read.table("coordonneskings.txt", sep = "\t", header = TRUE)
 coordinates(coordonneeskings) <- c(3,2)
 proj4string(coordonneeskings) <- crs2
 coord.kings <- spTransform(coordonneeskings, CRS(epsg.2953))
 
-#Fait un graphique de Kings avec les points de ceuillettes des échantillons
+# Fait un graphique de Kings avec les points de ceuillettes des échantillons
 plot(comtes[8,],
      xlab = "Longitude",
      ylab = "Latitude",
@@ -148,7 +148,7 @@ plot(coord.kings,
      bg = "dodgerblue",
      add = TRUE)
 
-#labels
+# labels
 pointLabel(coord.kings@coords,
            labels = coordonneeskings$ID,
            cex = 0.7,
@@ -175,13 +175,13 @@ map.scale(2510000,
 ![Graphique de Kings avec les points de cueillette des échantillons][SA_2]
 
 ```
-#comtés de Albert
+# comtés de Albert
 coordonneesalbert <- read.table("coordonneshills.txt", sep = "\t", header = TRUE)
 coordinates(coordonneesalbert) <- c(3,2)
 proj4string(coordonneesalbert) <- crs2
 coord.albert <- spTransform(coordonneesalbert, CRS(epsg.2953))
 
-#Fait un graphique du comtés de Albert avec les points de ceuillettes des échantillons près de Hillsborough
+# Fait un graphique du comtés de Albert avec les points de ceuillettes des échantillons près de Hillsborough
 plot(comtes[14,],
      xlab = "Longitude",
      ylab = "Latitude",
@@ -193,7 +193,7 @@ plot(coord.albert,
      bg = "dodgerblue",
      add = TRUE)
 
-#labels
+# labels
 pointLabel(coord.albert@coords,
            labels = coordonneesalbert$ID,
            cex = 0.7,
@@ -221,7 +221,7 @@ map.scale(2605000,
 
 ```
 
-#Carte composite NB
+# Carte composite NB
 plot(comtes,
      main = "Nouveau-Brunswick",
      axes = FALSE)
@@ -261,7 +261,7 @@ map.scale(2350000,
 
 ```
 
-#Raster Brute
+# Raster Brute
 cell.length <- 0.2
 comtes2 <- spTransform(comtes, CRS(wgs.84))
 bbox(comtes2)
@@ -287,7 +287,7 @@ plot(land.grid,
      add = TRUE,
      axes = FALSE)
 
-#Changement de couleur et d'intervale.
+# Changement de couleur et d'intervale.
 palette <- brewer.pal(5, "YlOrRd")
 plot(land.grid,
      col = palette,
@@ -308,7 +308,7 @@ north.arrow(-64.000,
 
 ```
 
-#Raster définition plus fine cell length plus petite
+# Raster définition plus fine cell length plus petite
 cell.length <- 0.03
 bbox(comtes2)
 ncol2 <- round((xmax - xmin)/cell.length, 0)
@@ -324,7 +324,7 @@ plot(land.grid2,
      add = TRUE,
      axes = FALSE)
 
-#Changement de couleur et d'intervale.
+# Changement de couleur et d'intervale.
 plot(land.grid2,
      col = palette,
      main = "Concentration en radium (pg/L) au Nouveau-Brunswick",
@@ -344,7 +344,7 @@ north.arrow(-64.000,
 
 ```
 
-#Représentation des échantillons de Kent en fonction de leurs concentrations en radium
+# Représentation des échantillons de Kent en fonction de leurs concentrations en radium
 class(coord.epsg2953)
 conc <- coordonnees$Conc
 break.points <- c(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35)
@@ -397,7 +397,7 @@ pointLabel(coord.epsg2953@coords,
 
 ```
 
-#Analyse spatiale recherche du voisin
+# Analyse spatiale recherche du voisin
 library(spdep)
 knn1 <- knearneigh(coord.epsg2953, k = 1, longlat = FALSE, RANN = FALSE)$nn
 knn1
@@ -448,11 +448,11 @@ lines(lowess(correlations, f = 1/10),
 
 ```
 
-#Création d'une matrice de poids basée sur la distance inverse
+# Création d'une matrice de poids basée sur la distance inverse
 d.matrix <- spDists(coord.epsg2953, coord.epsg2953, longlat = FALSE)
 d.matrix      # Création d'une matrice de distance
 
-#Détermine le nombre de points
+# Détermine le nombre de points
 np <- knear45$np
 np
 
@@ -463,7 +463,7 @@ np
 
 ```
 
-#Crée un vecteur pour stocké les poids
+# Crée un vecteur pour stocké les poids
 d.weights <- vector(mode = "list", length = np)
 
 for (i in 1:np) {                     # Une boucle prenant chaque point
@@ -498,7 +498,7 @@ knear45nb <- knn2nb(knear45)
 class(knear45nb)
 knear45nb
 
-#Examen de l'autoccorélation entre les points d'échantillons selon la concentration en radium
+# Examen de l'autoccorélation entre les points d'échantillons selon la concentration en radium
 spknear45 <- nb2listw(knear45nb, glist=d.weights, style="C")
 moran.plot(coord.epsg2953$Conc,
            spknear45,
@@ -529,7 +529,7 @@ moran.test(coord.epsg2953$Conc, listw2U(spknear45))
 
 ```
 
-#Modèle pour déterminer ce qui influence la concentration en radium
+# Modèle pour déterminer ce qui influence la concentration en radium
 modele1 <- lm(Conc ~ Age + Profondeur, data = coord.epsg2953)
 summary(modele1)
 
@@ -569,7 +569,7 @@ summary(modele1)
 
 ```
 
-#Comparaison entre les différents comtés.
+# Comparaison entre les différents comtés.
 concentrations <- read.table("concentrations.txt", sep = "\t", header = TRUE)
 concentrations$Comtes <- as.factor(concentrations$Comtes)
 
@@ -607,7 +607,7 @@ data:  anova$residuals
 skew = 1.1799, z = 3.6102, p-value = 0.0003059
 alternative hypothesis: data have a skewness
 
- #Les résidus ne sont pas normalement distribués
+ # Les résidus ne sont pas normalement distribués
 
  logConc <- log10(concentrations$Conc+1)
  anova2 <- aov(logConc ~ concentrations$Comtes)
@@ -668,7 +668,7 @@ alternative hypothesis: data have a skewness
      Min.   1st Qu.    Median      Mean   3rd Qu.      Max.
 -0.175000 -0.066140 -0.003878  0.000000  0.049600  0.164600
 
- #Présentation des résidus
+ # Présentation des résidus
  layout(matrix(1:4, 2, 2))
  plot(lm(sqrtlogConc ~ concentrations$Comtes), which = 1:4)  
 
@@ -678,16 +678,22 @@ alternative hypothesis: data have a skewness
 
 ```
 
-#Représentation graphique anova
+# Représentation graphique anova
 layout(matrix(1))
-plot(concentrations$Comtes, sqrtlogConc, xlab = "comtés", ylab = "sqrt(log10(Conc+1))", col = c("brown1", "lightblue", "darkgoldenrod1"), axes =TRUE, main="Comparaision ANOVA concentration en radium par comté")
+plot(concentrations$Comtes,
+     sqrtlogConc,
+     xlab = "comtés",
+     ylab = "sqrt(log10(Conc+1))",
+     col = c("brown1", "lightblue", "darkgoldenrod1"),
+     axes =TRUE,
+     main="Comparaision ANOVA concentration en radium par comté")
 
 ```  
 
 ![Representation graphique de l'anova][SA_13]
 
 ```
-#Comparaisons planifié KENT et HILLS et KINGS et HILLS
+# Comparaisons planifié KENT et HILLS et KINGS et HILLS
  contrasts(concentrations$Comtes) <- cbind(c(-1,1,0), c(1,0,-1))
  contrasts(concentrations$Comtes)
       [,1] [,2]
@@ -716,7 +722,7 @@ Multiple R-squared:  0.1057,	Adjusted R-squared:  0.0778
 F-statistic: 3.784 on 2 and 64 DF,  p-value: 0.02797
 
 
- #Comparasion non-planifié
+# Comparasion non-planifié
  anova(anova4)
 Analysis of Variance Table
 
