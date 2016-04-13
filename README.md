@@ -592,7 +592,7 @@ Vérifiez que vous avez bel et bien la dernière version de R à partir de la co
 
 Vous pouvez obtenir la dernière version de R ici: https://www.r-project.org/
 
-### Installation de Bioconductor
+#### Installation de Bioconductor
 Pour accéder aux librairies de cytométrie en flux, il faut d'abord installer Bioconductor.
 Dans la console de R, tappez:
 
